@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.setPadding
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class FragmentMoviesList : Fragment() {
 
@@ -19,15 +22,22 @@ class FragmentMoviesList : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        view?.findViewById<View>(R.id.movieCard1)?.apply {
-            setOnClickListener{
-                fragmentMoviesClickListener?.onClickMovieCard()
-            }
-        }
+        return inflater.inflate(R.layout.fragment_movies_list, container, false)
+    }
 
-        return  view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val recycler: RecyclerView = view.findViewById(R.id.rv_movies)
+        val adapter = MovieAdapter(DataUtil().generateMovies(), fragmentMoviesClickListener)
+        adapter.setHasStableIds(true)
+        recycler.adapter = adapter
+        val gridSize = resources.getInteger(R.integer.grid_size)
+        recycler.layoutManager = GridLayoutManager(requireContext(), gridSize)
+        recycler.setHasFixedSize(true)
+        recycler.addItemDecoration(MovieSpaceItemDecoration(
+                resources.getDimensionPixelSize(R.dimen.movie_card_padding),
+                gridSize
+        ))
     }
 
     override fun onAttach(context: Context) {

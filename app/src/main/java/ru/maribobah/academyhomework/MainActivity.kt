@@ -6,6 +6,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import ru.maribobah.academyhomework.data.models.Movie
 
 class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 
@@ -20,10 +21,10 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
         }
     }
 
-    override fun onClickMovieCard() {
+    override fun onClickMovieCard(movie: Movie) {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.mainContainer, FragmentMoviesDetails())
+            .replace(R.id.mainContainer, FragmentMoviesDetails(movie))
             .commit()
     }
 
@@ -34,6 +35,6 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 }
 
 interface FragmentMoviesListClickListener {
-    fun onClickMovieCard()
+    fun onClickMovieCard(movie: Movie)
     fun onClickBack()
 }
