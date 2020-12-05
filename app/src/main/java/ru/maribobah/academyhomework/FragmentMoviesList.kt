@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.maribobah.academyhomework.data.models.Movie
 
 class FragmentMoviesList : Fragment() {
 
@@ -51,4 +52,9 @@ class FragmentMoviesList : Fragment() {
         super.onDetach()
         fragmentMoviesClickListener = null
     }
+}
+
+interface FragmentMoviesListClickListener {
+    fun onClickMovieCard(movie: Movie)
+    fun onClickBack()
 }

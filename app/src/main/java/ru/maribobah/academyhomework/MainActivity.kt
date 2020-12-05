@@ -34,7 +34,3 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 
 }
 
-interface FragmentMoviesListClickListener {
-    fun onClickMovieCard(movie: Movie)
-    fun onClickBack()
-}

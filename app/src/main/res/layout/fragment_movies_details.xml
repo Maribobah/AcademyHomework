@@ -53,7 +53,7 @@
                 android:layout_marginTop="56dp"
                 android:text="@string/back_button_text"
                 android:textColor="@color/white_50"
-                android:textSize="12sp"
+                android:textSize="@dimen/font_normal_size"
                 app:layout_constraintStart_toEndOf="@+id/backIcon"
                 app:layout_constraintTop_toTopOf="@+id/iv_poster_details" />
 
@@ -65,7 +65,7 @@
                 android:layout_marginBottom="52dp"
                 tools:text="@string/movie_rate_sample"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="@dimen/font_normal_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -78,7 +78,7 @@
                 android:layout_marginEnd="16dp"
                 tools:text="@string/movie_title_sample"
                 android:textColor="@color/title_white"
-                android:textSize="40sp"
+                android:textSize="@dimen/font_main_title_size"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -221,14 +221,14 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_storyline_details"
-                app:lineHeight="24sp" />
+                app:lineHeight="@dimen/font_secondary_title_size" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_cast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

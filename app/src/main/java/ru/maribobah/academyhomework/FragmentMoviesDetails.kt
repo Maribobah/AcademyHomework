@@ -40,10 +40,8 @@ class FragmentMoviesDetails(private val movie: Movie) : Fragment() {
             movie.setTintColorForStar(view.findViewById(idIconView), i)
         }
 
-        view.findViewById<View>(R.id.backButton)?.apply {
-            setOnClickListener{
+        view.findViewById<View>(R.id.backButton)?.setOnClickListener{
                 fragmentMoviesClickListener?.onClickBack()
-            }
         }
 
         return view

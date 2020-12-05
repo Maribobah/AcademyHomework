@@ -10,6 +10,7 @@
         android:layout_width="@dimen/actor_avatar_space"
         android:layout_height="@dimen/actor_avatar_space"
         android:contentDescription="@string/actor_avatar_content_desc"
+        android:scaleType="fitStart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars[0]" />
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:textColor="@color/cast_title_white"
-        android:textSize="12sp"
+        android:textSize="@dimen/font_normal_size"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/iv_actor_photo"
         app:layout_constraintStart_toStartOf="@id/iv_actor_photo"

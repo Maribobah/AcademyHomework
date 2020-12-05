@@ -2,33 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="285dp">
-
-    <View
-        android:id="@+id/v_card"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/movie_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_width="166dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/movie_card">
 
     <ImageView
         android:id="@+id/iv_poster"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginBottom="48dp"
         android:contentDescription="@string/poster_image_desc"
-        android:scaleType="fitXY"
-        tools:src="@drawable/avengers_card"
-        app:layout_constraintBottom_toBottomOf="@id/v_card"
-        app:layout_constraintEnd_toEndOf="@id/v_card"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/v_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        tools:src="@drawable/avengers_card" />
 
     <ImageView
         android:id="@+id/iv_mask_poster"
@@ -37,8 +25,8 @@
         android:scaleType="fitXY"
         android:src="@drawable/mask_poster"
         app:layout_constraintBottom_toBottomOf="@id/iv_poster"
-        app:layout_constraintEnd_toEndOf="@id/v_card"
-        app:layout_constraintStart_toStartOf="@id/v_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/iv_poster" />
 
     <TextView
@@ -49,23 +37,23 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/rate_background"
         android:gravity="center"
-        tools:text="@string/movie_rate_sample"
         android:textColor="@color/white"
-        android:textSize="12sp"
+        android:textSize="@dimen/font_normal_size"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/v_card"
-        app:layout_constraintTop_toTopOf="@id/v_card" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/movie_rate_sample" />
 
     <ImageView
         android:id="@+id/iv_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/like"
         android:src="@drawable/ic_like"
-        app:layout_constraintEnd_toEndOf="@id/v_card"
-        app:layout_constraintTop_toTopOf="@id/v_card" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_genre"
@@ -74,13 +62,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="22dp"
-        android:lineSpacingExtra="3sp"
-        tools:text="@string/movie_genre_sample"
+        android:lineSpacingExtra="@dimen/font_spacing_extra"
         android:textColor="@color/activity_color"
-        android:textSize="8sp"
+        android:textSize="@dimen/font_caption_size"
         app:layout_constraintBottom_toBottomOf="@id/iv_poster"
         app:layout_constraintEnd_toEndOf="@id/iv_poster"
-        app:layout_constraintStart_toStartOf="@id/iv_poster" />
+        app:layout_constraintStart_toStartOf="@id/iv_poster"
+        tools:text="@string/movie_genre_sample" />
 
     <ImageView
         android:id="@+id/ic_star1"
@@ -163,45 +151,43 @@
         android:layout_marginStart="6dp"
         android:layout_marginTop="2dp"
         android:gravity="center_vertical"
-        tools:text="@string/movie_reviews_sample"
         android:textColor="@color/review_color"
-        android:textSize="8sp"
+        android:textSize="@dimen/font_caption_size"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/tv_genre"
         app:layout_constraintStart_toEndOf="@id/ic_star5"
-        app:layout_constraintTop_toBottomOf="@id/tv_genre" />
+        app:layout_constraintTop_toBottomOf="@id/tv_genre"
+        tools:text="@string/movie_reviews_sample" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="20dp"
         android:gravity="start"
-        tools:text="@string/movie_title_sample"
         android:textColor="@color/title_white"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/v_card"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/v_card"
-        app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_poster"
+        tools:text="@string/movie_title_sample" />
 
     <TextView
         android:id="@+id/tv_duration"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_vertical"
-        android:lineSpacingExtra="3sp"
-        tools:text="@string/movie_duration_sample"
+        android:lineSpacingExtra="@dimen/font_spacing_extra"
         android:textColor="@color/duration_color"
-        android:textSize="8sp"
+        android:textSize="@dimen/font_caption_size"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/v_card"
-        app:layout_constraintStart_toStartOf="@id/v_card"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:text="@string/movie_duration_sample" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
