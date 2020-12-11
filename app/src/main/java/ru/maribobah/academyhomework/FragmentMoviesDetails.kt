@@ -8,18 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Movie
 
-class FragmentMoviesDetails(private val movie: Movie) : Fragment() {
+class FragmentMoviesDetails() : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
+    private lateinit var movie: Movie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        movie = arguments?.getParcelable<Movie>("movie")!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -70,5 +70,16 @@ class FragmentMoviesDetails(private val movie: Movie) : Fragment() {
         super.onDetach()
         fragmentMoviesClickListener = null
     }
+
+    companion object {
+        fun newInstance(movie: Movie): FragmentMoviesDetails {
+            val args = Bundle()
+            args.putParcelable("movie", movie)
+            val fragment = FragmentMoviesDetails()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
 }
 

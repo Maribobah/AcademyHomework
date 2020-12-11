@@ -1,8 +1,11 @@
 package ru.maribobah.academyhomework.data.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import android.widget.ImageView
 import ru.maribobah.academyhomework.R
 
+@Parcelize
 class Movie (
     val name: String,
     val rate: String,
@@ -15,7 +18,7 @@ class Movie (
     val posterDetails: Int,
     val storyline: String,
     val actors: List<Actor>
-) {
+) : Parcelable {
     val reviewsStr: String
         get() = "$reviews reviews"
 
