@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.maribobah.academyhomework.data.models.Movie
 import java.security.AccessController
 
@@ -55,12 +56,12 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
     fun onBind(movie: Movie) {
 
         rate.text = movie.rate
-        genre.text = movie.genres
+        genre.text = movie.genres.joinToString { it.name }
         title.text = movie.name
         review.text = movie.reviewsStr
         duration.text = "${movie.duration} MIN"
 
-        poster.setImageResource(movie.poster)
+        Glide.with(itemView).load(movie.poster).fitCenter().into(poster)
         Movie.setTintColor(like, movie.like)
 
         for (i in 1..5) movie.setTintColorForStar(stars[i-1], i)

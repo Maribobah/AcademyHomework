@@ -29,11 +29,11 @@ class FragmentMoviesDetails() : Fragment() {
 
         view.findViewById<TextView>(R.id.tv_rate_details).text = movie.rate
         view.findViewById<TextView>(R.id.tv_title_details).text = movie.name
-        view.findViewById<TextView>(R.id.tv_genre_details).text = movie.genres
+        view.findViewById<TextView>(R.id.tv_genre_details).text = movie.genres.joinToString { it.name }
         view.findViewById<TextView>(R.id.tv_reviews_details).text = movie.reviewsStr
         view.findViewById<TextView>(R.id.tv_storyline_details).text = movie.storyline
 
-        view.findViewById<ImageView>(R.id.iv_poster_details).setImageResource(movie.posterDetails)
+//        view.findViewById<ImageView>(R.id.iv_poster_details).setImageResource(movie.backdrop)
 
         for (i in 1..5) {
             val idIconView = resources.getIdentifier("ic_star${i}_details", "id", context?.packageName)

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.maribobah.academyhomework.data.models.Actor
 
 class CastMovieAdapter(val actors: List<Actor>) : RecyclerView.Adapter<CastMovieViewHolder>() {
@@ -32,7 +33,7 @@ class CastMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.tv_actor_avatar)
 
     fun onBind(actor: Actor) {
-        avatar.setImageResource(actor.avatar)
+        Glide.with(itemView.context).load(actor.avatar).into(avatar)
         name.text = actor.name
     }
 
