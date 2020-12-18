@@ -9,4 +9,18 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="avengers_rate">+13</string>
+    <string name="avengers_title">Avengers:<br/>End Game</string>
+    <string name="avengers_genre">Action, Adventure, Fantasy</string>
+    <string name="poster_image_desc">Movie poster</string>
+    <string name="star_icon_desc">Rate star</string>
+    <string name="avengers_count_review">125 reviews</string>
+    <string name="storyline_title">Storyline</string>
+    <string name="avengers_storyline">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.</string>
+    <string name="cast_title">Cast</string>
+    <string name="robert_downey_name">Robert Downey Jr.</string>
+    <string name="chris_evans_name">Chris Evans</string>
+    <string name="mark_ruffalo_name">Mark Ruffalo</string>
+    <string name="chris_hemsworth_name">Chris Hemsworth</string>
+    <string name="back_button_text">Back</string>
 </resources>
