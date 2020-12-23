@@ -6,7 +6,7 @@ import android.widget.ImageView
 import ru.maribobah.academyhomework.R
 
 @Parcelize
-class Movie (
+class Movie(
     val name: String,
     val rate: String,
     val like: Boolean,
@@ -18,20 +18,4 @@ class Movie (
     val posterDetails: Int,
     val storyline: String,
     val actors: List<Actor>
-) : Parcelable {
-    val reviewsStr: String
-        get() = "$reviews reviews"
-
-    fun setTintColorForStar(imageView: ImageView, number: Int) {
-        setTintColor(imageView, number <= stars)
-    }
-
-    companion object {
-        fun setTintColor(imageView: ImageView, value: Boolean) {
-            if (value)
-                imageView.setColorFilter(imageView.resources.getColor(R.color.activity_color))
-            else
-                imageView.clearColorFilter()
-        }
-    }
-}
+) : Parcelable

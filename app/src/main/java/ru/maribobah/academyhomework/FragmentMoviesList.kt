@@ -34,10 +34,12 @@ class FragmentMoviesList : Fragment() {
         val gridSize = resources.getInteger(R.integer.grid_size)
         recycler.layoutManager = GridLayoutManager(requireContext(), gridSize)
         recycler.setHasFixedSize(true)
-        recycler.addItemDecoration(MovieSpaceItemDecoration(
+        recycler.addItemDecoration(
+            MovieSpaceItemDecoration(
                 resources.getDimensionPixelSize(R.dimen.movie_card_padding),
                 gridSize
-        ))
+            )
+        )
     }
 
     override fun onAttach(context: Context) {
