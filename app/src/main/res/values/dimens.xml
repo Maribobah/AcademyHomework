@@ -1,3 +1,11 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="movie_card_padding">8dp</dimen>
+    <dimen name="cast_movie_space">8dp</dimen>
+    <dimen name="actor_avatar_space">80dp</dimen>
+    <dimen name="font_spacing_extra">3sp</dimen>
+    <dimen name="font_normal_size">12sp</dimen>
+    <dimen name="font_main_title_size">40sp</dimen>
+    <dimen name="font_secondary_title_size">24sp</dimen>
+    <dimen name="font_caption_size">8sp</dimen>
 </resources>
