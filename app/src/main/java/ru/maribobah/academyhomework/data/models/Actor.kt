@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Parcelize
 @Serializable
-class Actor (
+class Actor(
      val id: Int,
      val name: String,
      @SerialName("profile_path")

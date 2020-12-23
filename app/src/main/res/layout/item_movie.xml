@@ -26,10 +26,8 @@
         android:src="@drawable/mask_poster"
         app:layout_constraintBottom_toBottomOf="@id/iv_poster"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_poster"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@id/iv_poster" />
 
     <TextView
         android:id="@+id/tv_rate"
@@ -82,12 +80,13 @@
         android:progressBackgroundTint="@color/review_color"
         android:progressDrawable="@drawable/ratingbar_stars"
         android:progressTint="@color/activity_color"
-        android:stepSize="1"
+        android:secondaryProgressTint="@color/review_color"
+        android:stepSize="0.1"
+        app:drawableHeight="8dp"
+        app:drawableWidth="8dp"
         app:layout_constraintEnd_toStartOf="@id/tv_review"
         app:layout_constraintStart_toStartOf="@id/tv_genre"
         app:layout_constraintTop_toBottomOf="@id/tv_genre"
-        app:drawableHeight="8dp"
-        app:drawableWidth="8dp"
         tools:rating="4" />
 
     <TextView

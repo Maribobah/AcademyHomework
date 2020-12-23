@@ -18,10 +18,6 @@ class FragmentMoviesList : Fragment() {
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
     private lateinit var movies: List<Movie>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,11 +36,13 @@ class FragmentMoviesList : Fragment() {
             val gridSize = resources.getInteger(R.integer.grid_size)
             recycler.layoutManager = GridLayoutManager(requireContext(), gridSize)
             recycler.setHasFixedSize(true)
-            recycler.addItemDecoration(MovieSpaceItemDecoration(
-                resources.getDimensionPixelSize(R.dimen.movie_card_padding),
-                gridSize
+            recycler.addItemDecoration(
+                MovieSpaceItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.movie_card_padding),
+                    gridSize
+                )
             )
-        )
+        }
     }
 
     override fun onAttach(context: Context) {

@@ -2,11 +2,10 @@ package ru.maribobah.academyhomework.data.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import android.widget.ImageView
-import ru.maribobah.academyhomework.R
 
 @Parcelize
 class Movie(
+    val id: Int,
     val name: String,
     val rate: String,
     val like: Boolean = false,

@@ -32,7 +32,7 @@ private class JsonMovie(
     val adult: Boolean
 )
 
-internal suspend fun loadMovies(context: Context) : List<Movie> = withContext(Dispatchers.IO) {
+internal suspend fun loadMovies(context: Context): List<Movie> = withContext(Dispatchers.IO) {
     val genresMap = loadGenres(context)
     val actorsMap = loadActors(context)
 
@@ -40,7 +40,7 @@ internal suspend fun loadMovies(context: Context) : List<Movie> = withContext(Di
     parseMovies(data, genresMap, actorsMap)
 }
 
-internal fun parseMovies(data: String, genres: List<Genre>, actors: List<Actor>) : List<Movie> {
+internal fun parseMovies(data: String, genres: List<Genre>, actors: List<Actor>): List<Movie> {
     val genresMap = genres.associateBy { it.id }
     val actorsMap = actors.associateBy { it.id }
 
@@ -66,17 +66,17 @@ internal fun parseMovies(data: String, genres: List<Genre>, actors: List<Actor>)
     }
 }
 
-private suspend fun loadGenres(context: Context) : List<Genre> = withContext(Dispatchers.IO) {
+private suspend fun loadGenres(context: Context): List<Genre> = withContext(Dispatchers.IO) {
     val data = readAssetFileToString(context, "genres.json")
     jsonFormat.decodeFromString<List<Genre>>(data)
 }
 
-private suspend fun loadActors(context: Context) : List<Actor> = withContext(Dispatchers.IO) {
+private suspend fun loadActors(context: Context): List<Actor> = withContext(Dispatchers.IO) {
     val data = readAssetFileToString(context, "people.json")
     jsonFormat.decodeFromString<List<Actor>>(data)
 }
 
-private fun readAssetFileToString(context: Context, fileName: String) : String {
+private fun readAssetFileToString(context: Context, fileName: String): String {
     val stream = context.assets.open(fileName)
     return stream.bufferedReader().readText()
 }

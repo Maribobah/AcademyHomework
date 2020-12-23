@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.maribobah.academyhomework.data.models.Movie
 
 class FragmentMoviesDetails() : Fragment() {
@@ -36,29 +37,38 @@ class FragmentMoviesDetails() : Fragment() {
 
         view.findViewById<TextView>(R.id.tv_rate_details).text = movie.rate
         view.findViewById<TextView>(R.id.tv_title_details).text = movie.name
-        view.findViewById<TextView>(R.id.tv_genre_details).text = movie.genres.joinToString { it.name }
+        view.findViewById<TextView>(R.id.tv_genre_details).text =
+            MoviePresentation.genresPresentation(movie.genres)
         view.findViewById<TextView>(R.id.tv_reviews_details).text =
             MoviePresentation.reviewsPresentation(movie.reviews)
         view.findViewById<TextView>(R.id.tv_storyline_details).text = movie.storyline
-//        view.findViewById<ImageView>(R.id.iv_poster_details).setImageResource(movie.backdrop)
-        view.findViewById<RatingBarSvg>(R.id.rb_rating).progress = movie.stars
+        view.findViewById<RatingBarSvg>(R.id.rb_rating).rating =
+            MoviePresentation.starsFormat(movie.stars)
 
-        view.findViewById<View>(R.id.backButton)?.setOnClickListener {
+        val posterView = view.findViewById<ImageView>(R.id.iv_poster_details)
+        Glide.with(this).load(movie.backdrop).into(posterView)
+
+        view.findViewById<View>(R.id.btn_back)?.setOnClickListener {
             fragmentMoviesClickListener?.onClickBack()
         }
 
-        val adapter = MovieCastAdapter(movie.actors)
-        adapter.setHasStableIds(true)
         val recycler: RecyclerView = view.findViewById(R.id.rv_cast)
-        recycler.adapter = adapter
-        recycler.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recycler.setHasFixedSize(true)
-        recycler.addItemDecoration(
-            MovieCastSpaceItemDecoration(
-                resources.getDimensionPixelSize(R.dimen.cast_movie_space)
+        if (movie.actors.isEmpty()) {
+            view.findViewById<TextView>(R.id.tv_head_cast).visibility = View.GONE
+            recycler.visibility = View.GONE
+        } else {
+            val adapter = MovieCastAdapter(movie.actors)
+            adapter.setHasStableIds(true)
+            recycler.adapter = adapter
+            recycler.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            recycler.setHasFixedSize(true)
+            recycler.addItemDecoration(
+                MovieCastSpaceItemDecoration(
+                    resources.getDimensionPixelSize(R.dimen.cast_movie_space)
+                )
             )
-        )
+        }
     }
 
     override fun onAttach(context: Context) {
