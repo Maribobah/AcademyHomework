@@ -26,8 +26,10 @@
         android:src="@drawable/mask_poster"
         app:layout_constraintBottom_toBottomOf="@id/iv_poster"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_poster" />
+        app:layout_constraintTop_toTopOf="@id/iv_poster"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tv_rate"
@@ -70,92 +72,35 @@
         app:layout_constraintStart_toStartOf="@id/iv_poster"
         tools:text="@string/movie_genre_sample" />
 
-    <ImageView
-        android:id="@+id/ic_star1"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
+    <ru.maribobah.academyhomework.RatingBarSvg
+        android:id="@+id/rb_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="2dp"
-        android:contentDescription="@string/star_icon_desc"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toStartOf="@id/ic_star2"
+        android:layout_marginEnd="8dp"
+        android:numStars="5"
+        android:progressBackgroundTint="@color/review_color"
+        android:progressDrawable="@drawable/ratingbar_stars"
+        android:progressTint="@color/activity_color"
+        android:stepSize="1"
+        app:layout_constraintEnd_toStartOf="@id/tv_review"
         app:layout_constraintStart_toStartOf="@id/tv_genre"
         app:layout_constraintTop_toBottomOf="@id/tv_genre"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/activity_color" />
-
-    <ImageView
-        android:id="@+id/ic_star2"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="2dp"
-        android:contentDescription="@string/star_icon_desc"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toStartOf="@id/ic_star3"
-        app:layout_constraintStart_toEndOf="@id/ic_star1"
-        app:layout_constraintTop_toBottomOf="@id/tv_genre"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/activity_color" />
-
-    <ImageView
-        android:id="@+id/ic_star3"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="2dp"
-        android:contentDescription="@string/star_icon_desc"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toStartOf="@id/ic_star4"
-        app:layout_constraintStart_toEndOf="@id/ic_star2"
-        app:layout_constraintTop_toBottomOf="@id/tv_genre"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/activity_color" />
-
-    <ImageView
-        android:id="@+id/ic_star4"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="2dp"
-        android:contentDescription="@string/star_icon_desc"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toStartOf="@id/ic_star5"
-        app:layout_constraintStart_toEndOf="@id/ic_star3"
-        app:layout_constraintTop_toBottomOf="@id/tv_genre"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/activity_color" />
-
-    <ImageView
-        android:id="@+id/ic_star5"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="6dp"
-        android:contentDescription="@string/star_icon_desc"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toStartOf="@id/tv_review"
-        app:layout_constraintStart_toEndOf="@id/ic_star4"
-        app:layout_constraintTop_toBottomOf="@id/tv_genre"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="@color/review_color" />
+        app:drawableHeight="8dp"
+        app:drawableWidth="8dp"
+        tools:rating="4" />
 
     <TextView
         android:id="@+id/tv_review"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_height="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:gravity="center_vertical"
         android:textColor="@color/review_color"
         android:textSize="@dimen/font_caption_size"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/tv_genre"
-        app:layout_constraintStart_toEndOf="@id/ic_star5"
+        app:layout_constraintStart_toEndOf="@id/rb_rating"
         app:layout_constraintTop_toBottomOf="@id/tv_genre"
         tools:text="@string/movie_reviews_sample" />
 

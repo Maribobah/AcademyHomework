@@ -43,8 +43,8 @@ class FragmentMoviesList : Fragment() {
             recycler.addItemDecoration(MovieSpaceItemDecoration(
                 resources.getDimensionPixelSize(R.dimen.movie_card_padding),
                 gridSize
-            ))
-        }
+            )
+        )
     }
 
     override fun onAttach(context: Context) {

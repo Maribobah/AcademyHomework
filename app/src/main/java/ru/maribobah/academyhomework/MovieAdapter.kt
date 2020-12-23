@@ -13,13 +13,15 @@ import com.bumptech.glide.Glide
 import ru.maribobah.academyhomework.data.models.Movie
 import java.security.AccessController
 
-class MovieAdapter(private val movies: List<Movie>, val clickListener: FragmentMoviesListClickListener?)
-    : RecyclerView.Adapter<MovieViewHolder>(){
+class MovieAdapter(
+    private val movies: List<Movie>,
+    val clickListener: FragmentMoviesListClickListener?
+) : RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.view_holder_movie, parent, false)
-        return  MovieViewHolder(view)
+        val view = inflater.inflate(R.layout.item_movie, parent, false)
+        return MovieViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -35,7 +37,7 @@ class MovieAdapter(private val movies: List<Movie>, val clickListener: FragmentM
 
 }
 
-class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val poster: ImageView = itemView.findViewById(R.id.iv_poster)
     private val rate: TextView = itemView.findViewById(R.id.tv_rate)
@@ -44,39 +46,37 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
     private val review: TextView = itemView.findViewById(R.id.tv_review)
     private val title: TextView = itemView.findViewById(R.id.tv_title)
     private val duration: TextView = itemView.findViewById(R.id.tv_duration)
-
-    private val stars: List<ImageView> = listOf(
-        itemView.findViewById(R.id.ic_star1),
-        itemView.findViewById(R.id.ic_star2),
-        itemView.findViewById(R.id.ic_star3),
-        itemView.findViewById(R.id.ic_star4),
-        itemView.findViewById(R.id.ic_star5)
-    )
+    private val rating: RatingBarSvg = itemView.findViewById(R.id.rb_rating)
 
     fun onBind(movie: Movie) {
-
         rate.text = movie.rate
         genre.text = movie.genres.joinToString { it.name }
         title.text = movie.name
-        review.text = movie.reviewsStr
-        duration.text = "${movie.duration} MIN"
+        review.text = MoviePresentation.reviewsPresentation(movie.reviews)
+        duration.text = MoviePresentation.durationPresentation(movie.duration)
+        rating.progress = movie.stars
 
         Glide.with(itemView).load(movie.poster).fitCenter().into(poster)
-        Movie.setTintColor(like, movie.like)
-
-        for (i in 1..5) movie.setTintColorForStar(stars[i-1], i)
-
+        MoviePresentation.setTintColor(like, movie.like)
     }
 }
 
-class MovieSpaceItemDecoration(private val padding: Int, private val gridSize: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-
+class MovieSpaceItemDecoration(private val padding: Int, private val gridSize: Int) :
+    RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
         val itemPosition = parent.getChildAdapterPosition(view)
         outRect.left = padding
-        outRect.right = if ((itemPosition + 1) % gridSize == 0) padding else 0
-        outRect.top = if (itemPosition < gridSize) 0 else padding
+        outRect.right = if ((itemPosition + 1) % gridSize == 0) {
+            padding
+        } else 0
+        outRect.top = if (itemPosition < gridSize) {
+            0
+        } else padding
         outRect.bottom = 0
-
     }
 }

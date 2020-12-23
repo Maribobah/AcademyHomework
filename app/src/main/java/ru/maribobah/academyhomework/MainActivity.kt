@@ -1,11 +1,7 @@
 package ru.maribobah.academyhomework
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import ru.maribobah.academyhomework.data.models.Movie
 
 class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
@@ -16,7 +12,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.mainContainer, FragmentMoviesList())
+                .add(R.id.container_main, FragmentMoviesList())
                 .commit()
         }
     }
@@ -24,7 +20,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
     override fun onClickMovieCard(movie: Movie) {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.mainContainer, FragmentMoviesDetails.newInstance(movie))
+            .replace(R.id.container_main, FragmentMoviesDetails.newInstance(movie))
             .commit()
     }
 
