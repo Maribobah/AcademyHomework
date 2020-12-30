@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Movie
 
 class MovieAdapter(
-    private var movies: List<Movie>?,
+    private var movies: List<Movie>? = null,
     val clickListener: FragmentMoviesListClickListener?
 ) : RecyclerView.Adapter<MovieViewHolder>() {
 

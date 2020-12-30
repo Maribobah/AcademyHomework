@@ -1,10 +1,17 @@
 package ru.maribobah.academyhomework
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import ru.maribobah.academyhomework.data.models.Movie
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,7 +33,19 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         duration.text = MoviePresentation.durationPresentation(movie.duration)
         rating.rating = MoviePresentation.starsFormat(movie.stars)
 
-        Glide.with(itemView).load(movie.poster).fitCenter().into(poster)
+        val context = itemView.context
+        val circularProgressDrawable = CircularProgressDrawable(context).also {
+            it.strokeWidth = 12f
+            it.centerRadius = 48f
+            it.setColorSchemeColors(ContextCompat.getColor(context, R.color.activity_color))
+            it.start()
+        }
+
+        Glide.with(itemView).load(movie.poster)
+            .fitCenter()
+            .transform(GranularRoundedCorners(32f, 32f, 0f, 0f))
+            .placeholder(circularProgressDrawable)
+            .into(poster)
         MoviePresentation.setTintColor(like, movie.like)
     }
 

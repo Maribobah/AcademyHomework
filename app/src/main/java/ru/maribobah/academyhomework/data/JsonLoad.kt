@@ -32,7 +32,7 @@ private class JsonMovie(
     val adult: Boolean
 )
 
-internal suspend fun loadMovies(context: Context): List<Movie> = withContext(Dispatchers.IO) {
+internal suspend fun loadMoviesFromAssets(context: Context): List<Movie> = withContext(Dispatchers.IO) {
     val genresMap = loadGenres(context)
     val actorsMap = loadActors(context)
 
