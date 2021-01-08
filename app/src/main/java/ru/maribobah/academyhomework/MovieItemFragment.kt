@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.maribobah.academyhomework.data.models.Movie
 
-class FragmentMoviesDetails() : Fragment() {
+class MovieItemFragment() : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
     private lateinit var movie: Movie
@@ -84,10 +84,10 @@ class FragmentMoviesDetails() : Fragment() {
     }
 
     companion object {
-        fun newInstance(movie: Movie): FragmentMoviesDetails {
+        fun newInstance(movie: Movie): MovieItemFragment {
             val args = Bundle()
             args.putParcelable("movie", movie)
-            val fragment = FragmentMoviesDetails()
+            val fragment = MovieItemFragment()
             fragment.arguments = args
             return fragment
         }

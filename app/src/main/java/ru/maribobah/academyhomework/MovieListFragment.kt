@@ -11,11 +11,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Movie
 
-class FragmentMoviesList : Fragment() {
+class MovieListFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
     private val viewModel: MoviesListViewModel by viewModels { ViewModelFactory() }
     private lateinit var adapter: MovieAdapter
+
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.e("LoadMovie", "Failed load movies. Context: $coroutineContext")
+        throwable.printStackTrace()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
