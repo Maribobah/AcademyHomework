@@ -4,8 +4,6 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Movie
 
@@ -21,7 +19,7 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.onBind(movies[position])
+        holder.bindMovie(movies[position])
         holder.itemView.setOnClickListener {
             clickListener?.onClickMovieCard(movies[position])
         }
@@ -31,30 +29,6 @@ class MovieAdapter(
 
     override fun getItemId(position: Int): Long = position.toLong()
 
-}
-
-class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    private val poster: ImageView = itemView.findViewById(R.id.iv_poster)
-    private val rate: TextView = itemView.findViewById(R.id.tv_rate)
-    private val like: ImageView = itemView.findViewById(R.id.iv_like)
-    private val genre: TextView = itemView.findViewById(R.id.tv_genre)
-    private val review: TextView = itemView.findViewById(R.id.tv_review)
-    private val title: TextView = itemView.findViewById(R.id.tv_title)
-    private val duration: TextView = itemView.findViewById(R.id.tv_duration)
-    private val rating: RatingBarSvg = itemView.findViewById(R.id.rb_rating)
-
-    fun onBind(movie: Movie) {
-        rate.text = movie.rate
-        genre.text = movie.genres
-        title.text = movie.name
-        review.text = MoviePresentation.reviewsPresentation(movie.reviews)
-        duration.text = MoviePresentation.durationPresentation(movie.duration)
-        rating.progress = movie.stars
-
-        poster.setImageResource(movie.poster)
-        MoviePresentation.setTintColor(like, movie.like)
-    }
 }
 
 class MovieSpaceItemDecoration(private val padding: Int, private val gridSize: Int) :

@@ -2,20 +2,26 @@ package ru.maribobah.academyhomework
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
+import loadMovies
 import ru.maribobah.academyhomework.data.models.Movie
 
-class FragmentMoviesList : Fragment() {
+class MovieListFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.e("LoadMovie", "Failed load movies. Context: $coroutineContext")
+        throwable.printStackTrace()
     }
 
     override fun onCreateView(
@@ -28,9 +34,12 @@ class FragmentMoviesList : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recycler: RecyclerView = view.findViewById(R.id.rv_movies)
-        val adapter = MovieAdapter(DataUtil().generateMovies(), fragmentMoviesClickListener)
-        adapter.setHasStableIds(true)
-        recycler.adapter = adapter
+        viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
+            val movies = loadMovies(requireContext())
+            val adapter = MovieAdapter(movies, fragmentMoviesClickListener)
+            adapter.setHasStableIds(true)
+            recycler.adapter = adapter
+        }
         val gridSize = resources.getInteger(R.integer.grid_size)
         recycler.layoutManager = GridLayoutManager(requireContext(), gridSize)
         recycler.setHasFixedSize(true)

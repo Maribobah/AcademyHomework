@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.container_main, FragmentMoviesList())
+                .add(R.id.container_main, MovieListFragment())
                 .commit()
         }
     }
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
     override fun onClickMovieCard(movie: Movie) {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.container_main, FragmentMoviesDetails.newInstance(movie))
+            .replace(R.id.container_main, MovieItemFragment.newInstance(movie))
             .commit()
     }
 
