@@ -17,11 +17,6 @@ class MovieListFragment : Fragment() {
     private val viewModel: MoviesListViewModel by viewModels { ViewModelFactory() }
     private lateinit var adapter: MovieAdapter
 
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        Log.e("LoadMovie", "Failed load movies. Context: $coroutineContext")
-        throwable.printStackTrace()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,8 +40,8 @@ class MovieListFragment : Fragment() {
     }
 
     override fun onDetach() {
-        super.onDetach()
         fragmentMoviesClickListener = null
+        super.onDetach()
     }
 
     private fun initRecycler(view: View) {

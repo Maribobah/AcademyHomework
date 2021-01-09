@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Actor
 
-class MovieCastAdapter(val actors: List<Actor>) : RecyclerView.Adapter<MovieCastViewHolder>() {
+class MovieCastAdapter(private var actors: List<Actor>? = null) :
+    RecyclerView.Adapter<MovieCastViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieCastViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -16,11 +17,17 @@ class MovieCastAdapter(val actors: List<Actor>) : RecyclerView.Adapter<MovieCast
     }
 
     override fun onBindViewHolder(holder: MovieCastViewHolder, position: Int) {
-        holder.bindActor(actors[position])
+        actors?.let {
+            holder.bindActor(it[position])
+        }
     }
 
-    override fun getItemCount(): Int = actors.size
+    override fun getItemCount(): Int = actors?.size ?: 0
 
+    fun setData(actors: List<Actor>) {
+        this.actors = actors
+        notifyDataSetChanged()
+    }
 }
 
 class MovieCastSpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {

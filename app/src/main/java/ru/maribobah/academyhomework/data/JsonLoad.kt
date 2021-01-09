@@ -32,38 +32,57 @@ private class JsonMovie(
     val adult: Boolean
 )
 
-internal suspend fun loadMoviesFromAssets(context: Context): List<Movie> = withContext(Dispatchers.IO) {
-    val genresMap = loadGenres(context)
-    val actorsMap = loadActors(context)
+internal suspend fun loadMoviesFromAssets(context: Context): List<Movie> =
+    withContext(Dispatchers.IO) {
+        val genresMap = loadGenres(context)
+        val actorsMap = loadActors(context)
 
-    val data = readAssetFileToString(context, "data.json")
-    parseMovies(data, genresMap, actorsMap)
-}
+        val data = readAssetFileToString(context, "data.json")
+        parseMovies(data, genresMap, actorsMap)
+    }
+
+internal suspend fun findMovieInAssets(context: Context, id: Int): Movie =
+    withContext(Dispatchers.IO) {
+        val genresMap = loadGenres(context)
+        val actorsMap = loadActors(context)
+
+        val data = readAssetFileToString(context, "data.json")
+        findMovie(data, genresMap, actorsMap, id)
+    }
 
 internal fun parseMovies(data: String, genres: List<Genre>, actors: List<Actor>): List<Movie> {
     val genresMap = genres.associateBy { it.id }
     val actorsMap = actors.associateBy { it.id }
-
     val jsonMovies = jsonFormat.decodeFromString<List<JsonMovie>>(data)
-    return jsonMovies.map {
-        Movie(
-            id = it.id,
-            name = it.title,
-            storyline = it.overview,
-            poster = it.poster,
-            backdrop = it.backdrop,
-            stars = it.ratings,
-            reviews = it.reviews,
-            rate = if (it.adult) "16+" else "13+",
-            duration = it.runtime,
-            genres = it.genreIds.map {
-                genresMap[it] ?: throw IllegalArgumentException("Genre not found")
-            },
-            actors = it.actors.map {
-                actorsMap[it] ?: throw IllegalArgumentException("Actor not found")
-            }
-        )
-    }
+    return jsonMovies.map { createMovie(it, genresMap, actorsMap) }
+}
+
+internal fun findMovie(data: String, genres: List<Genre>, actors: List<Actor>, id: Int): Movie {
+    val jsonMovies = jsonFormat.decodeFromString<List<JsonMovie>>(data).asSequence()
+    val dataMovie = jsonMovies.first { it.id == id }
+    val genresMap = genres.associateBy { it.id }
+    val actorsMap = actors.associateBy { it.id }
+    return createMovie(dataMovie, genresMap, actorsMap)
+}
+
+private fun createMovie(jsonMovie: JsonMovie, genres: Map<Int, Genre>, actors: Map<Int, Actor>): Movie {
+   return Movie(
+        id = jsonMovie.id,
+        name = jsonMovie.title,
+        storyline = jsonMovie.overview,
+        poster = jsonMovie.poster,
+        backdrop = jsonMovie.backdrop,
+        stars = jsonMovie.ratings,
+        reviews = jsonMovie.reviews,
+        rate = if (jsonMovie.adult) "16+" else "13+",
+        duration = jsonMovie.runtime,
+        genres = jsonMovie.genreIds.map {
+            genres[it] ?: throw IllegalArgumentException("Genre not found")
+        },
+        actors = jsonMovie.actors.map {
+            actors[it] ?: throw IllegalArgumentException("Actor not found")
+        }
+    )
 }
 
 private suspend fun loadGenres(context: Context): List<Genre> = withContext(Dispatchers.IO) {

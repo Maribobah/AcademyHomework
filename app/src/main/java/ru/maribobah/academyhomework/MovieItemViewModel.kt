@@ -6,24 +6,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import findMovieInAssets
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import loadMoviesFromAssets
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MoviesListViewModel : ViewModel() {
+class MovieItemViewModel : ViewModel() {
 
-    private val _mutableMoviesList = MutableLiveData<List<Movie>>(emptyList())
-    val moviesList: LiveData<List<Movie>> get() = _mutableMoviesList
+    private val _mutableMovie = MutableLiveData<Movie>()
+    val movie: LiveData<Movie> get() = _mutableMovie
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        Log.e("LoadMovies", "Failed load movies. Context: $coroutineContext")
+        Log.e("LoadMovie", "Failed load movie. Context: $coroutineContext")
         throwable.printStackTrace()
     }
 
-    fun loadMovies(context: Context) {
+    fun loadMovie(context: Context, id: Int) {
         viewModelScope.launch(exceptionHandler) {
-            _mutableMoviesList.value = loadMoviesFromAssets(context)
+            _mutableMovie.value = findMovieInAssets(context, id)
         }
     }
 }

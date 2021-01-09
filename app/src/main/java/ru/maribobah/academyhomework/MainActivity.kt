@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
     override fun onClickMovieCard(movie: Movie) {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.container_main, MovieItemFragment.newInstance(movie))
+            .replace(R.id.container_main, MovieItemFragment.newInstance(movie.id))
             .commit()
     }
 
