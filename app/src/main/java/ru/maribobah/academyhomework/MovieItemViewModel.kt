@@ -11,7 +11,7 @@ import ru.maribobah.academyhomework.data.TmdbApi
 import ru.maribobah.academyhomework.data.models.Actor
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MovieItemViewModel(val context: Context) : ViewModel() {
+class MovieItemViewModel() : ViewModel() {
 
     private val _mutableMovie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> get() = _mutableMovie
@@ -20,9 +20,8 @@ class MovieItemViewModel(val context: Context) : ViewModel() {
 
     private val tmdbApi = TmdbApi()
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-        Log.e("LoadMovie", "Failed load movie. Error: $exception")
-        exception.printStackTrace()
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("MovieItemViewModel", "Failed load movie. Error: $throwable", throwable)
     }
 
     fun loadMovie(id: Int) {

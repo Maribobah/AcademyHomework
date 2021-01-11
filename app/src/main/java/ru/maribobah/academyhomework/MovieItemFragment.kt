@@ -34,8 +34,8 @@ class MovieItemFragment() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        idMovie = arguments?.getInt("id")
-            ?: throw IllegalArgumentException("Can't find \"id\" argument")
+        idMovie = arguments?.getInt(ID_FIELD)
+            ?: throw IllegalArgumentException("Can't find \"${ID_FIELD}\" argument")
     }
 
     override fun onCreateView(
