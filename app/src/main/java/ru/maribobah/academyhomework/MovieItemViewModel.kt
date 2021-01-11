@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MovieItemViewModel : ViewModel() {
+class MovieItemViewModel(val context: Context) : ViewModel() {
 
     private val _mutableMovie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> get() = _mutableMovie
@@ -21,7 +21,7 @@ class MovieItemViewModel : ViewModel() {
         throwable.printStackTrace()
     }
 
-    fun loadMovie(context: Context, id: Int) {
+    fun loadMovie(id: Int) {
         viewModelScope.launch(exceptionHandler) {
             _mutableMovie.value = findMovieInAssets(context, id)
         }

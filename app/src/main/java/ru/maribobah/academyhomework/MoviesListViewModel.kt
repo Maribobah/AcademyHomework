@@ -11,17 +11,20 @@ import kotlinx.coroutines.launch
 import loadMoviesFromAssets
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MoviesListViewModel : ViewModel() {
+class MoviesListViewModel(val context: Context) : ViewModel() {
 
     private val _mutableMoviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> get() = _mutableMoviesList
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        Log.e("LoadMovies", "Failed load movies. Context: $coroutineContext")
-        throwable.printStackTrace()
+        Log.e("MoviesListViewModel", "Failed load movies. Message: $throwable", throwable)
     }
 
-    fun loadMovies(context: Context) {
+    init {
+        loadMovies()
+    }
+
+    fun loadMovies() {
         viewModelScope.launch(exceptionHandler) {
             _mutableMoviesList.value = loadMoviesFromAssets(context)
         }

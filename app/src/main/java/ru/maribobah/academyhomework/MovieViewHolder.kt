@@ -34,16 +34,18 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         rating.rating = MoviePresentation.starsFormat(movie.stars)
 
         val context = itemView.context
-        val circularProgressDrawable = CircularProgressDrawable(context).also {
-            it.strokeWidth = 12f
-            it.centerRadius = 48f
-            it.setColorSchemeColors(ContextCompat.getColor(context, R.color.activity_color))
-            it.start()
+        val circularProgressDrawable = CircularProgressDrawable(context).apply {
+            strokeWidth = itemView.resources.getFloat(R.dimen.stroke_width_circular_progress)
+            centerRadius = itemView.resources.getFloat(R.dimen.radius_circular_progress)
+            setColorSchemeColors(ContextCompat.getColor(context, R.color.activity_color))
+            start()
         }
+
+        val radiusCorners = itemView.resources.getFloat(R.dimen.radius_corners_movie_card)
 
         Glide.with(itemView).load(movie.poster)
             .fitCenter()
-            .transform(GranularRoundedCorners(32f, 32f, 0f, 0f))
+            .transform(GranularRoundedCorners(radiusCorners, radiusCorners, 0f, 0f))
             .placeholder(circularProgressDrawable)
             .into(poster)
         MoviePresentation.setTintColor(like, movie.like)
