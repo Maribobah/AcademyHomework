@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Movie
 
 class MovieAdapter(
-    private val movies: List<Movie>,
     val clickListener: FragmentMoviesListClickListener?
 ) : RecyclerView.Adapter<MovieViewHolder>() {
 
+    private var movies: List<Movie> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_movie, parent, false)
@@ -19,16 +19,21 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bindMovie(movies[position])
+        val movie = movies[position]
+        holder.bindMovie(movie)
         holder.itemView.setOnClickListener {
-            clickListener?.onClickMovieCard(movies[position])
+            clickListener?.onClickMovieCard(movie)
         }
     }
 
     override fun getItemCount(): Int = movies.size
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = movies[position].id.toLong()
 
+    fun setData(movies: List<Movie>) {
+        this.movies = movies
+        notifyDataSetChanged()
+    }
 }
 
 class MovieSpaceItemDecoration(private val padding: Int, private val gridSize: Int) :

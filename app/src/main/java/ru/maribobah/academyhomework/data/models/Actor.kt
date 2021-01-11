@@ -8,7 +8,9 @@ import kotlinx.serialization.Serializable
 @Parcelize
 @Serializable
 class Actor(
+     @SerialName("id")
      val id: Int,
+     @SerialName("name")
      val name: String,
      @SerialName("profile_path")
      val avatar: String

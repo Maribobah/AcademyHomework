@@ -2,27 +2,20 @@ package ru.maribobah.academyhomework
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.launch
-import loadMovies
 import ru.maribobah.academyhomework.data.models.Movie
 
 class MovieListFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
-
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        Log.e("LoadMovie", "Failed load movies. Context: $coroutineContext")
-        throwable.printStackTrace()
-    }
+    private val viewModel: MoviesListViewModel by viewModels { ViewModelFactory(requireContext()) }
+    private lateinit var adapter: MovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,13 +26,27 @@ class MovieListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recycler: RecyclerView = view.findViewById(R.id.rv_movies)
-        viewLifecycleOwner.lifecycleScope.launch(exceptionHandler) {
-            val movies = loadMovies(requireContext())
-            val adapter = MovieAdapter(movies, fragmentMoviesClickListener)
-            adapter.setHasStableIds(true)
-            recycler.adapter = adapter
+        adapter = MovieAdapter(clickListener = fragmentMoviesClickListener)
+        initRecycler(view)
+        viewModel.moviesList.observe(viewLifecycleOwner, this::updateMovieAdapter)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is FragmentMoviesListClickListener) {
+            fragmentMoviesClickListener = context
         }
+    }
+
+    override fun onDetach() {
+        fragmentMoviesClickListener = null
+        super.onDetach()
+    }
+
+    private fun initRecycler(view: View) {
+        val recycler: RecyclerView = view.findViewById(R.id.rv_movies)
+        adapter.setHasStableIds(true)
+        recycler.adapter = adapter
         val gridSize = resources.getInteger(R.integer.grid_size)
         recycler.layoutManager = GridLayoutManager(requireContext(), gridSize)
         recycler.setHasFixedSize(true)
@@ -51,16 +58,8 @@ class MovieListFragment : Fragment() {
         )
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is FragmentMoviesListClickListener) {
-            fragmentMoviesClickListener = context
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        fragmentMoviesClickListener = null
+    private fun updateMovieAdapter(movies: List<Movie>) {
+        adapter.setData(movies)
     }
 }
 
