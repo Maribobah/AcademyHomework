@@ -23,14 +23,14 @@ class MovieItemFragment() : Fragment() {
     private var idMovie: Int = -1
 
     private var recycler: RecyclerView? = null
-    private var tvRate: TextView? = null
-    private var tvTitle: TextView? = null
-    private var tvGenre: TextView? = null
-    private var tvReviews: TextView? = null
-    private var tvStoryline: TextView? = null
-    private var rbRating: RatingBarSvg? = null
-    private var ivPoster: ImageView? = null
-    private var tvHeadCast: TextView? = null
+    private lateinit var tvRate: TextView
+    private lateinit var tvTitle: TextView
+    private lateinit var tvGenre: TextView
+    private lateinit var tvReviews: TextView
+    private lateinit var tvStoryline: TextView
+    private lateinit var rbRating: RatingBarSvg
+    private lateinit var ivPoster: ImageView
+    private lateinit var tvHeadCast: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,26 +73,18 @@ class MovieItemFragment() : Fragment() {
     override fun onDestroyView() {
         recycler?.adapter = null
         recycler = null
-        tvRate = null
-        tvTitle = null
-        tvGenre = null
-        tvReviews = null
-        tvStoryline = null
-        rbRating = null
-        ivPoster = null
-        tvHeadCast = null
         super.onDestroyView()
     }
 
     private fun initRecycler(view: View) {
+        adapter.setHasStableIds(true)
         recycler = view.findViewById(R.id.rv_cast)
-        recycler?.let {
-            adapter.setHasStableIds(true)
-            it.adapter = adapter
-            it.layoutManager =
+        recycler?.adapter = adapter
+        recycler?.apply {
+            layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            it.setHasFixedSize(true)
-            it.addItemDecoration(
+            setHasFixedSize(true)
+            addItemDecoration(
                 MovieCastSpaceItemDecoration(
                     resources.getDimensionPixelSize(R.dimen.cast_movie_space)
                 )
@@ -112,21 +104,19 @@ class MovieItemFragment() : Fragment() {
     }
 
     private fun updateMovie(movie: Movie) {
-        tvRate?.text = MoviePresentation.ratePresentation(movie.adult)
-        tvTitle?.text = movie.name
-        tvGenre?.text = MoviePresentation.genresPresentation(movie.genres)
-        tvReviews?.text = MoviePresentation.reviewsPresentation(movie.reviews)
-        tvStoryline?.text = movie.storyline
-        rbRating?.rating = MoviePresentation.starsFormat(movie.stars)
+        tvRate.text = MoviePresentation.ratePresentation(movie.adult)
+        tvTitle.text = movie.name
+        tvGenre.text = MoviePresentation.genresPresentation(movie.genres)
+        tvReviews.text = MoviePresentation.reviewsPresentation(movie.reviews)
+        tvStoryline.text = movie.storyline
+        rbRating.rating = MoviePresentation.starsFormat(movie.stars)
 
-        ivPoster?.let {
-            Glide.with(this).load(movie.backdrop).into(it)
-        }
+        Glide.with(this).load(movie.backdrop).into(ivPoster)
     }
 
     private fun updateActors(actors: List<Actor>) {
         if (actors.isEmpty()) {
-            tvHeadCast?.visibility = View.GONE
+            tvHeadCast.visibility = View.GONE
             recycler?.visibility = View.GONE
         } else {
             adapter.setData(actors)
@@ -134,14 +124,14 @@ class MovieItemFragment() : Fragment() {
     }
 
     companion object {
+        private const val ID_FIELD = "id"
         fun newInstance(id: Int): MovieItemFragment {
             val args = Bundle()
-            args.putInt("id", id)
+            args.putInt(ID_FIELD, id)
             val fragment = MovieItemFragment()
             fragment.arguments = args
             return fragment
         }
     }
-
 }
 

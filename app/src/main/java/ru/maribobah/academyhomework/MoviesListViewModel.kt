@@ -17,9 +17,12 @@ class MoviesListViewModel : ViewModel() {
 
     private val tmdbApi = TmdbApi()
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-        Log.e("LoadMovies", "Failed load movies. Error: $exception")
-        exception.printStackTrace()
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("MoviesListViewModel", "Failed load movies. Message: $throwable", throwable)
+    }
+
+    init {
+        loadMovies()
     }
 
     fun loadMovies() {

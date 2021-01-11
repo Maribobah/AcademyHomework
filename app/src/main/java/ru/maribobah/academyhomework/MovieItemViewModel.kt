@@ -11,7 +11,7 @@ import ru.maribobah.academyhomework.data.TmdbApi
 import ru.maribobah.academyhomework.data.models.Actor
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MovieItemViewModel : ViewModel() {
+class MovieItemViewModel(val context: Context) : ViewModel() {
 
     private val _mutableMovie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> get() = _mutableMovie

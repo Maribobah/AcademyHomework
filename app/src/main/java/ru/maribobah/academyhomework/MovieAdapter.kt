@@ -20,12 +20,10 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        movies.let {
-            val movie = it[position]
-            holder.bindMovie(movie)
-            holder.itemView.setOnClickListener {
-                clickListener?.onClickMovieCard(movie)
-            }
+        val movie = movies[position]
+        holder.bindMovie(movie)
+        holder.itemView.setOnClickListener {
+            clickListener?.onClickMovieCard(movie)
         }
     }
 

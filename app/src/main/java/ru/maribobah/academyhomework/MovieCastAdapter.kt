@@ -22,15 +22,14 @@ class MovieCastAdapter() :
         holder.bindActor(actors[position])
     }
 
-    fun setData(actors: List<Actor>) {
-        this.actors = actors
-        notifyDataSetChanged()
-    }
-
     override fun getItemCount(): Int = actors.size
 
     override fun getItemId(position: Int): Long = actors[position].id.toLong()
 
+    fun setData(actors: List<Actor>) {
+        this.actors = actors
+        notifyDataSetChanged()
+    }
 }
 
 class MovieCastSpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
