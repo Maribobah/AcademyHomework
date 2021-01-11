@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.maribobah.academyhomework.data.models.Actor
 import ru.maribobah.academyhomework.data.models.Movie
 
 class MovieItemFragment() : Fragment() {
@@ -50,7 +51,8 @@ class MovieItemFragment() : Fragment() {
         initRecycler(view)
         initViews(view)
         viewModel.movie.observe(viewLifecycleOwner, this::updateMovie)
-        viewModel.loadMovie(requireContext(), idMovie)
+        viewModel.actorsList.observe(viewLifecycleOwner, this::updateActors)
+        viewModel.loadMovie(idMovie)
         view.findViewById<View>(R.id.btn_back)?.setOnClickListener {
             fragmentMoviesClickListener?.onClickBack()
         }
@@ -110,7 +112,7 @@ class MovieItemFragment() : Fragment() {
     }
 
     private fun updateMovie(movie: Movie) {
-        tvRate?.text = movie.rate
+        tvRate?.text = MoviePresentation.ratePresentation(movie.adult)
         tvTitle?.text = movie.name
         tvGenre?.text = MoviePresentation.genresPresentation(movie.genres)
         tvReviews?.text = MoviePresentation.reviewsPresentation(movie.reviews)
@@ -120,12 +122,14 @@ class MovieItemFragment() : Fragment() {
         ivPoster?.let {
             Glide.with(this).load(movie.backdrop).into(it)
         }
+    }
 
-        if (movie.actors.isEmpty()) {
+    private fun updateActors(actors: List<Actor>) {
+        if (actors.isEmpty()) {
             tvHeadCast?.visibility = View.GONE
             recycler?.visibility = View.GONE
         } else {
-            adapter.setData(movie.actors)
+            adapter.setData(actors)
         }
     }
 

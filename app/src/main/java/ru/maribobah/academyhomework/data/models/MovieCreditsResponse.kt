@@ -4,9 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Genre(
+class MovieCreditsResponse (
     @SerialName("id")
     val id: Int,
-    @SerialName("name")
-    val name: String
+    @SerialName("cast")
+    val actors: List<Actor>,
+    @SerialName("crew")
+    val crew: List<Actor>
 )

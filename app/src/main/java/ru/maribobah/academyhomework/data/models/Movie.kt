@@ -1,33 +1,30 @@
 package ru.maribobah.academyhomework.data.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 class Movie(
     @SerialName("id")
     val id: Int,
-    @SerialName("name")
+    @SerialName("title")
     val name: String,
-    @SerialName("rate")
-    val rate: String,
+    @SerialName("adult")
+    val adult: Boolean,
     @SerialName("like")
     val like: Boolean = false,
-    @SerialName("stars")
+    @SerialName("vote_average")
     val stars: Float,
-    @SerialName("reviews")
+    @SerialName("vote_count")
     val reviews: Int,
-    @SerialName("duration")
-    val duration: Int,
-    @SerialName("poster")
-    val poster: String,
-    @SerialName("backdrop")
-    val backdrop: String,
-    @SerialName("storyline")
+    @SerialName("runtime")
+    val duration: Int = 0,
+    @SerialName("poster_path")
+    var poster: String?,
+    @SerialName("backdrop_path")
+    var backdrop: String?,
+    @SerialName("overview")
     val storyline: String,
-    @SerialName("actors")
-    val actors: List<Actor>,
     @SerialName("genres")
-    val genres: List<Genre>
-) : Parcelable
+    val genres: List<Genre> = listOf<Genre>()
+)

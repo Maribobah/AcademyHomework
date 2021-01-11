@@ -12,18 +12,17 @@ class MoviePresentation {
             else
                 imageView.clearColorFilter()
         }
-        fun reviewsPresentation(reviews: Int) : String {
-            return "$reviews reviews"
-        }
-        fun durationPresentation(duration: Int) : String {
-            return "$duration MIN"
-        }
-        fun genresPresentation(genres: List<Genre>) : String {
-            return genres.joinToString { it.name }
-        }
-        fun starsFormat(stars: Float) : Float {
-            return stars/2
-        }
+
+        fun reviewsPresentation(reviews: Int): String = "$reviews reviews"
+
+        fun durationPresentation(duration: Int): String = "$duration MIN"
+
+        fun genresPresentation(genres: List<Genre>): String = genres.joinToString { it.name }
+
+        fun starsFormat(stars: Float): Float = stars / 2
+
+        fun ratePresentation(adult: Boolean): String = if (adult) "16+" else "13+"
+
     }
 
 }

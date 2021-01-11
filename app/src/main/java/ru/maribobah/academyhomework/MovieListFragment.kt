@@ -29,7 +29,7 @@ class MovieListFragment : Fragment() {
         adapter = MovieAdapter(clickListener = fragmentMoviesClickListener)
         initRecycler(view)
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateMovieAdapter)
-        viewModel.loadMovies(requireContext())
+        viewModel.loadMovies()
     }
 
     override fun onAttach(context: Context) {

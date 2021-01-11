@@ -2,6 +2,7 @@ package ru.maribobah.academyhomework
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.opengl.Visibility
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,12 +27,17 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val rating: RatingBarSvg = itemView.findViewById(R.id.rb_rating)
 
     fun bindMovie(movie: Movie) {
-        rate.text = movie.rate
+        rate.text = MoviePresentation.ratePresentation(movie.adult)
         genre.text = MoviePresentation.genresPresentation(movie.genres)
         title.text = movie.name
         review.text = MoviePresentation.reviewsPresentation(movie.reviews)
-        duration.text = MoviePresentation.durationPresentation(movie.duration)
         rating.rating = MoviePresentation.starsFormat(movie.stars)
+
+        if (movie.duration == 0) {
+            duration.visibility = View.INVISIBLE
+        } else {
+            duration.text = MoviePresentation.durationPresentation(movie.duration)
+        }
 
         val context = itemView.context
         val circularProgressDrawable = CircularProgressDrawable(context).also {

@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Movie
 
 class MovieAdapter(
-    private var movies: List<Movie>? = null,
     val clickListener: FragmentMoviesListClickListener?
 ) : RecyclerView.Adapter<MovieViewHolder>() {
+
+    private var movies: List<Movie> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -19,7 +20,7 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        movies?.let {
+        movies.let {
             val movie = it[position]
             holder.bindMovie(movie)
             holder.itemView.setOnClickListener {
@@ -28,11 +29,9 @@ class MovieAdapter(
         }
     }
 
-    override fun getItemCount(): Int = movies?.size ?: 0
+    override fun getItemCount(): Int = movies.size
 
-    override fun getItemId(position: Int): Long {
-        return movies?.let { it[position].id.toLong() } ?: RecyclerView.NO_ID
-    }
+    override fun getItemId(position: Int): Long = movies[position].id.toLong()
 
     fun setData(movies: List<Movie>) {
         this.movies = movies
