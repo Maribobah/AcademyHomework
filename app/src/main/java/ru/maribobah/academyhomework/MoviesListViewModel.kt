@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import ru.maribobah.academyhomework.data.TmdbApi
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MoviesListViewModel : ViewModel() {
+class MoviesListViewModel(private val category : MoviesListPages) : ViewModel() {
 
     private val _mutableMoviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> get() = _mutableMoviesList
@@ -27,8 +27,14 @@ class MoviesListViewModel : ViewModel() {
 
     fun loadMovies() {
         viewModelScope.launch(exceptionHandler) {
-            val res = tmdbApi.services.popularMovies()
             val imagesInfo = tmdbApi.services.configuration().images
+            val service = when (category) {
+                MoviesListPages.NOW_PLAYING -> tmdbApi.services::nowPlayingMovies
+                MoviesListPages.UPCOMING -> tmdbApi.services::upcomingMovies
+                MoviesListPages.POPULAR -> tmdbApi.services::popularMovies
+                MoviesListPages.TOP_RATED -> tmdbApi.services::topRatedMovies
+            }
+            val res = service.invoke()
             val movies = res.movies.map {
                 val movie = tmdbApi.services.movieDetails(it.id)
                 movie.backdrop = imagesInfo.getFullBackdropPath(movie.backdrop)

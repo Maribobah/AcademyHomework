@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context=".MovieListFragment">
+    tools:context=".CategoriesFragment">
 
     <TextView
         android:id="@+id/moviesListTitle"
@@ -31,14 +31,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_movies"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:paddingStart="16dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moviesListTitle"
+        app:tabIndicatorColor="@drawable/linear_tab_indicator"
+        app:tabIndicatorHeight="@dimen/tab_indicator_height"
+        app:tabMinWidth="114dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextAppearance="@style/tab_text_categories"
+        app:tabTextColor="@color/duration_color" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_movies"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/moviesListTitle" />
+        app:layout_constraintTop_toBottomOf="@id/tl_categories" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

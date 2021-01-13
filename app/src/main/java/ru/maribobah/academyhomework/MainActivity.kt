@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.container_main, MovieListFragment())
+                .add(R.id.container_main, CategoriesFragment())
                 .commit()
         }
     }
