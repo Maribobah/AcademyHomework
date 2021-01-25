@@ -1,18 +1,15 @@
 package ru.maribobah.academyhomework
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.data.tmdb.MovieConverter
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -27,11 +24,16 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindMovie(movie: Movie) {
         rate.text = movie.rate
-        genre.text = MoviePresentation.genresPresentation(movie.genres)
+        genre.text = movie.genresPresentation
         title.text = movie.name
-        review.text = MoviePresentation.reviewsPresentation(movie.reviews)
-        duration.text = MoviePresentation.durationPresentation(movie.duration)
-        rating.rating = MoviePresentation.starsFormat(movie.stars)
+        review.text = movie.reviews
+        rating.rating = movie.stars
+
+        if (movie.duration.isEmpty()) {
+            duration.visibility = View.INVISIBLE
+        } else {
+            duration.text = movie.duration
+        }
 
         val context = itemView.context
         val circularProgressDrawable = CircularProgressDrawable(context).apply {
@@ -48,7 +50,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .transform(GranularRoundedCorners(radiusCorners, radiusCorners, 0f, 0f))
             .placeholder(circularProgressDrawable)
             .into(poster)
-        MoviePresentation.setTintColor(like, movie.like)
+        MovieConverter.setTintColor(like, movie.like)
     }
 
 }

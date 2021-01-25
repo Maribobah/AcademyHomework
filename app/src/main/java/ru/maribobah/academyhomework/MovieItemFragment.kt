@@ -12,12 +12,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.maribobah.academyhomework.data.models.Actor
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MovieItemFragment() : Fragment() {
+class MovieItemFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
-    private val viewModel: MovieItemViewModel by viewModels { ViewModelFactory(requireContext()) }
+    private val viewModel: MovieItemViewModel by viewModels { ViewModelFactory() }
     private lateinit var adapter: MovieCastAdapter
     private var idMovie: Int = -1
 
@@ -33,8 +34,8 @@ class MovieItemFragment() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        idMovie = arguments?.getInt("id")
-            ?: throw IllegalArgumentException("Can't find \"id\" argument")
+        idMovie = arguments?.getInt(ID_FIELD)
+            ?: throw IllegalArgumentException("Can't find \"${ID_FIELD}\" argument")
     }
 
     override fun onCreateView(
@@ -50,6 +51,7 @@ class MovieItemFragment() : Fragment() {
         initRecycler(view)
         initViews(view)
         viewModel.movie.observe(viewLifecycleOwner, this::updateMovie)
+        viewModel.actors.observe(viewLifecycleOwner, this::updateActors)
         viewModel.loadMovie(idMovie)
         view.findViewById<View>(R.id.btn_back)?.setOnClickListener {
             fragmentMoviesClickListener?.onClickBack()
@@ -104,18 +106,20 @@ class MovieItemFragment() : Fragment() {
     private fun updateMovie(movie: Movie) {
         tvRate.text = movie.rate
         tvTitle.text = movie.name
-        tvGenre.text = MoviePresentation.genresPresentation(movie.genres)
-        tvReviews.text = MoviePresentation.reviewsPresentation(movie.reviews)
+        tvGenre.text = movie.genresPresentation
+        tvReviews.text = movie.reviews
         tvStoryline.text = movie.storyline
-        rbRating.rating = MoviePresentation.starsFormat(movie.stars)
+        rbRating.rating = movie.stars
 
         Glide.with(this).load(movie.backdrop).into(ivPoster)
+    }
 
-        if (movie.actors.isEmpty()) {
+    private fun updateActors(actors: List<Actor>) {
+        if (actors.isEmpty()) {
             tvHeadCast.visibility = View.GONE
             recycler?.visibility = View.GONE
         } else {
-            adapter.setData(movie.actors)
+            adapter.setData(actors)
         }
     }
 

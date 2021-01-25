@@ -12,6 +12,7 @@ class MovieAdapter(
 ) : RecyclerView.Adapter<MovieViewHolder>() {
 
     private var movies: List<Movie> = emptyList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_movie, parent, false)

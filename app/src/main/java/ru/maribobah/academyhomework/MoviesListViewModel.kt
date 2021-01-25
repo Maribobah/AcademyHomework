@@ -1,6 +1,5 @@
 package ru.maribobah.academyhomework
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,16 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import loadMoviesFromAssets
+import ru.maribobah.academyhomework.data.Repository
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MoviesListViewModel(val context: Context) : ViewModel() {
+class MoviesListViewModel(
+    private val repository: Repository
+) : ViewModel() {
 
     private val _mutableMoviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> get() = _mutableMoviesList
 
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        Log.e("MoviesListViewModel", "Failed load movies. Message: $throwable", throwable)
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.e("MoviesListViewModel", "Failed load movies.", throwable)
     }
 
     init {
@@ -26,7 +27,7 @@ class MoviesListViewModel(val context: Context) : ViewModel() {
 
     fun loadMovies() {
         viewModelScope.launch(exceptionHandler) {
-            _mutableMoviesList.value = loadMoviesFromAssets(context)
+            _mutableMoviesList.value = repository.getPopularMovies()
         }
     }
 }

@@ -14,7 +14,7 @@ import ru.maribobah.academyhomework.data.models.Movie
 class MovieListFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
-    private val viewModel: MoviesListViewModel by viewModels { ViewModelFactory(requireContext()) }
+    private val viewModel: MoviesListViewModel by viewModels { ViewModelFactory() }
     private lateinit var adapter: MovieAdapter
 
     override fun onCreateView(
