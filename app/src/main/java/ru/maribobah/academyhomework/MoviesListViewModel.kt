@@ -7,18 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import ru.maribobah.academyhomework.data.TmdbApi
+import ru.maribobah.academyhomework.data.Repository
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MoviesListViewModel : ViewModel() {
+class MoviesListViewModel(
+    private val repository: Repository
+) : ViewModel() {
 
     private val _mutableMoviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> get() = _mutableMoviesList
 
-    private val tmdbApi = TmdbApi()
-
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("MoviesListViewModel", "Failed load movies. Message: $throwable", throwable)
+        Log.e("MoviesListViewModel", "Failed load movies.", throwable)
     }
 
     init {
@@ -27,15 +27,7 @@ class MoviesListViewModel : ViewModel() {
 
     fun loadMovies() {
         viewModelScope.launch(exceptionHandler) {
-            val res = tmdbApi.services.popularMovies()
-            val imagesInfo = tmdbApi.services.configuration().images
-            val movies = res.movies.map {
-                val movie = tmdbApi.services.movieDetails(it.id)
-                movie.backdrop = imagesInfo.getFullBackdropPath(movie.backdrop)
-                movie.poster = imagesInfo.getFullPosterPath(movie.poster)
-                return@map movie
-            }
-            _mutableMoviesList.value = movies
+            _mutableMoviesList.value = repository.getPopularMovies()
         }
     }
 }

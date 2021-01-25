@@ -14,13 +14,17 @@ class MovieCastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val avatar: ImageView = itemView.findViewById(R.id.iv_actor_photo)
     private val name: TextView = itemView.findViewById(R.id.tv_actor_avatar)
 
+    private val scaleTransformation: CenterCrop = CenterCrop()
+    private val roundedCorners: RoundedCorners = RoundedCorners(
+        itemView.resources.getInteger(R.integer.corners_radius_actor_avatar)
+    )
+
     fun bindActor(actor: Actor) {
-
-        val radiusCorners = itemView.resources.getInteger(R.integer.radius_corners_actor_avatar)
-
-        Glide.with(itemView).load(actor.avatar)
-            .transform(CenterCrop(), RoundedCorners(radiusCorners))
-            .into(avatar)
+        if (actor.avatar != null) {
+            Glide.with(itemView).load(actor.avatar)
+                .transform(scaleTransformation, roundedCorners)
+                .into(avatar)
+        }
         name.text = actor.name
     }
 }

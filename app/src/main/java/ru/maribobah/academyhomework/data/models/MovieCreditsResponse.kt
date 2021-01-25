@@ -9,6 +9,4 @@ class MovieCreditsResponse (
     val id: Int,
     @SerialName("cast")
     val actors: List<Actor>,
-    @SerialName("crew")
-    val crew: List<Actor>
 )

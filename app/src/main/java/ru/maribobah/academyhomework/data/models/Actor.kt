@@ -10,5 +10,5 @@ class Actor(
      @SerialName("name")
      val name: String,
      @SerialName("profile_path")
-     var avatar: String = ""
+     var avatar: String?
 )
