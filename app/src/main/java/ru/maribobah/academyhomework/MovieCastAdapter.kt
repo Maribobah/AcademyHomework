@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.data.models.Actor
 
-class MovieCastAdapter() :
+class MovieCastAdapter :
     RecyclerView.Adapter<MovieCastViewHolder>() {
 
     private var actors: List<Actor> = emptyList()

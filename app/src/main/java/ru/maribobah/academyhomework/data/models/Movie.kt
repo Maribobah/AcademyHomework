@@ -11,14 +11,17 @@ class Movie(
     val name: String,
     @SerialName("adult")
     val adult: Boolean,
+    var rate: String = "",
     @SerialName("like")
     val like: Boolean = false,
     @SerialName("vote_average")
-    val stars: Float,
+    var stars: Float,
     @SerialName("vote_count")
-    val reviews: Int,
+    val votesCount: Int,
+    var reviews: String = "",
     @SerialName("runtime")
-    val duration: Int = 0,
+    val runtime: Int = 0,
+    var duration: String = "",
     @SerialName("poster_path")
     var poster: String?,
     @SerialName("backdrop_path")
@@ -26,5 +29,6 @@ class Movie(
     @SerialName("overview")
     val storyline: String,
     @SerialName("genres")
-    val genres: List<Genre> = listOf<Genre>()
+    val genres: List<Genre> = listOf(),
+    var genresPresentation: String = ""
 )

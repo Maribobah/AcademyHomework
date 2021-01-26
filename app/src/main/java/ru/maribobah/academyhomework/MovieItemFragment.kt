@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import ru.maribobah.academyhomework.data.models.Actor
 import ru.maribobah.academyhomework.data.models.Movie
 
-class MovieItemFragment() : Fragment() {
+class MovieItemFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
     private val viewModel: MovieItemViewModel by viewModels { ViewModelFactory() }
@@ -51,7 +51,7 @@ class MovieItemFragment() : Fragment() {
         initRecycler(view)
         initViews(view)
         viewModel.movie.observe(viewLifecycleOwner, this::updateMovie)
-        viewModel.actorsList.observe(viewLifecycleOwner, this::updateActors)
+        viewModel.actors.observe(viewLifecycleOwner, this::updateActors)
         viewModel.loadMovie(idMovie)
         view.findViewById<View>(R.id.btn_back)?.setOnClickListener {
             fragmentMoviesClickListener?.onClickBack()
@@ -104,12 +104,12 @@ class MovieItemFragment() : Fragment() {
     }
 
     private fun updateMovie(movie: Movie) {
-        tvRate.text = MoviePresentation.ratePresentation(movie.adult)
+        tvRate.text = movie.rate
         tvTitle.text = movie.name
-        tvGenre.text = MoviePresentation.genresPresentation(movie.genres)
-        tvReviews.text = MoviePresentation.reviewsPresentation(movie.reviews)
+        tvGenre.text = movie.genresPresentation
+        tvReviews.text = movie.reviews
         tvStoryline.text = movie.storyline
-        rbRating.rating = MoviePresentation.starsFormat(movie.stars)
+        rbRating.rating = movie.stars
 
         Glide.with(this).load(movie.backdrop).into(ivPoster)
     }

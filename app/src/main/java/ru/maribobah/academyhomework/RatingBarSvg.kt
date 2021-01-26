@@ -101,14 +101,13 @@ class RatingBarSvg @JvmOverloads constructor(
     @Synchronized
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         var mHeight = measuredHeight
-        val heightMS = heightMeasureSpec
 
         if (heightMeasureSpec != MeasureSpec.EXACTLY) {
             mHeight = drawableHeight
             MeasureSpec.EXACTLY
         }
 
-        super.onMeasure(widthMeasureSpec, heightMS)
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         sampleTile?.let {
             val width = it.width * numStars
