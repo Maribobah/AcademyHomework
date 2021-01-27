@@ -3,6 +3,9 @@ package ru.maribobah.academyhomework
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.fragments.categories.CategoriesFragment
+import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
+import ru.maribobah.academyhomework.fragments.movieItem.MovieItemFragment
 
 class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 

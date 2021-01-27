@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context=".CategoriesFragment">
+    tools:context=".fragments.categories.CategoriesFragment">
 
     <TextView
         android:id="@+id/moviesListTitle"
@@ -35,18 +35,15 @@
         android:id="@+id/tl_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="18dp"
         android:background="@android:color/transparent"
         android:paddingStart="16dp"
-        android:paddingTop="10dp"
         android:paddingEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/moviesListTitle"
-        app:tabIndicatorColor="@drawable/linear_tab_indicator"
+        app:tabIndicatorColor="@drawable/tab_indicator_color"
         app:tabIndicatorHeight="@dimen/tab_indicator_height"
-        app:tabMinWidth="114dp"
+        app:tabMinWidth="@dimen/tab_min_width"
         app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/white"
         app:tabTextAppearance="@style/tab_text_categories"

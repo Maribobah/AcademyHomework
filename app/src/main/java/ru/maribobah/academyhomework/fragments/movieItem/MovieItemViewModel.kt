@@ -1,4 +1,4 @@
-package ru.maribobah.academyhomework
+package ru.maribobah.academyhomework.fragments.movieItem
 
 import android.util.Log
 import androidx.lifecycle.LiveData

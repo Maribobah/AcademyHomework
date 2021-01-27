@@ -1,4 +1,4 @@
-package ru.maribobah.academyhomework
+package ru.maribobah.academyhomework.fragments.movieItem
 
 import android.content.Context
 import android.os.Bundle
@@ -12,8 +12,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.maribobah.academyhomework.*
 import ru.maribobah.academyhomework.data.models.Actor
 import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
 
 class MovieItemFragment : Fragment() {
 
@@ -35,7 +37,7 @@ class MovieItemFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idMovie = arguments?.getInt(ID_FIELD)
-            ?: throw IllegalArgumentException("Can't find \"${ID_FIELD}\" argument")
+            ?: throw IllegalArgumentException("Can't find \"$ID_FIELD\" argument")
     }
 
     override fun onCreateView(

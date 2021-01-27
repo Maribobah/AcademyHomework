@@ -1,4 +1,4 @@
-package ru.maribobah.academyhomework
+package ru.maribobah.academyhomework.fragments.moviesList
 
 import android.content.Context
 import android.os.Bundle
@@ -9,21 +9,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.maribobah.academyhomework.R
 import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
+import ru.maribobah.academyhomework.fragments.categories.MoviesListCategory
 
 class MovieListFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
-    private lateinit var category: MoviesListPages
+    private lateinit var category: MoviesListCategory
 
-    private val viewModel: MoviesListViewModel by viewModels { ViewModelFactory(category) }
+    private val viewModel: MoviesListViewModel by viewModels { MoviesListViewModelFactory(category) }
     private lateinit var adapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val categoryPosition = arguments?.getInt(CATEGORY_FIELD)
             ?: throw IllegalArgumentException("Can't find \"${CATEGORY_FIELD}\" argument")
-        category = MoviesListPages.values()[categoryPosition]
+        category = MoviesListCategory.values()[categoryPosition]
     }
 
     override fun onCreateView(
