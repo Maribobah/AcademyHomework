@@ -1,27 +1,39 @@
-package ru.maribobah.academyhomework
+package ru.maribobah.academyhomework.fragments.moviesList
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ru.maribobah.academyhomework.R
 import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
+import ru.maribobah.academyhomework.fragments.categories.MoviesListCategory
 
 class MovieListFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
-    private val viewModel: MoviesListViewModel by viewModels { ViewModelFactory() }
+    private lateinit var category: MoviesListCategory
+
+    private val viewModel: MoviesListViewModel by viewModels { MoviesListViewModelFactory(category) }
     private lateinit var adapter: MovieAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val categoryPosition = arguments?.getInt(CATEGORY_FIELD)
+            ?: throw IllegalArgumentException("Can't find \"${CATEGORY_FIELD}\" argument")
+        category = MoviesListCategory.values()[categoryPosition]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_movies_list, container, false)
+        return inflater.inflate(R.layout.fragment_movies_list_category, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,9 +73,15 @@ class MovieListFragment : Fragment() {
     private fun updateMovieAdapter(movies: List<Movie>) {
         adapter.setData(movies)
     }
-}
 
-interface FragmentMoviesListClickListener {
-    fun onClickMovieCard(movie: Movie)
-    fun onClickBack()
+    companion object {
+        private const val CATEGORY_FIELD = "category"
+        fun newInstance(category: Int): MovieListFragment {
+            val args = Bundle()
+            args.putInt(CATEGORY_FIELD, category)
+            val fragment = MovieListFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 }

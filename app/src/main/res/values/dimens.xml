@@ -8,6 +8,8 @@
     <dimen name="font_main_title_size">40sp</dimen>
     <dimen name="font_secondary_title_size">24sp</dimen>
     <dimen name="font_caption_size">8sp</dimen>
+    <dimen name="tab_indicator_height">2dp</dimen>
+    <dimen name="tab_min_width">114dp</dimen>
     <item name="radius_circular_progress" type="dimen" format="float">48</item>
     <item name="stroke_width_circular_progress" type="dimen" format="float">12</item>
     <item name="radius_corners_movie_card" type="dimen" format="float">32</item>

@@ -7,19 +7,22 @@ import ru.maribobah.academyhomework.data.models.Movie
 import ru.maribobah.academyhomework.data.tmdb.ImagesConverter
 import ru.maribobah.academyhomework.data.tmdb.MovieConverter
 import ru.maribobah.academyhomework.data.tmdb.TmdbApi
+import ru.maribobah.academyhomework.fragments.categories.MoviesListCategory
 
 class Repository {
 
     private val tmdbApi = TmdbApi.getInstance()
     private val imagesConverter = ImagesConverter()
 
-    suspend fun getPopularMovies() : List<Movie> = withContext(Dispatchers.IO) {
-        val res = tmdbApi.services.popularMovies()
-        val movies = res.movies.map { movie ->
-            convertMovieDetails(movie)
-            movie
+    suspend fun getMovies(category: MoviesListCategory) : List<Movie>{
+        val service = when(category) {
+            MoviesListCategory.NOW_PLAYING -> tmdbApi.services::popularMovies
+            MoviesListCategory.UPCOMING -> tmdbApi.services::upcomingMovies
+            MoviesListCategory.POPULAR -> tmdbApi.services::popularMovies
+            MoviesListCategory.TOP_RATED -> tmdbApi.services::topRatedMovies
         }
-        movies
+        val res = service.invoke()
+        return convertMovies(res.movies)
     }
 
     suspend fun getMovieDetails(id: Int) : Movie = withContext(Dispatchers.IO) {
@@ -35,6 +38,13 @@ class Repository {
                 actor.avatar = imagesConverter.getFullProfilePath(actor.avatar)
             }
             actor
+        }
+    }
+
+    private suspend fun convertMovies(movies: List<Movie>) : List<Movie> {
+        return movies.map { movie ->
+            convertMovieDetails(movie)
+            movie
         }
     }
 

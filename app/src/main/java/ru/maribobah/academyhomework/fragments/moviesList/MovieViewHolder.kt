@@ -1,4 +1,4 @@
-package ru.maribobah.academyhomework
+package ru.maribobah.academyhomework.fragments.moviesList
 
 import android.view.View
 import android.widget.ImageView
@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import ru.maribobah.academyhomework.R
+import ru.maribobah.academyhomework.RatingBarSvg
 import ru.maribobah.academyhomework.data.models.Movie
 import ru.maribobah.academyhomework.data.tmdb.MovieConverter
 

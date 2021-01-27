@@ -1,4 +1,4 @@
-package ru.maribobah.academyhomework
+package ru.maribobah.academyhomework.fragments.moviesList
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -9,8 +9,10 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.maribobah.academyhomework.data.Repository
 import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.fragments.categories.MoviesListCategory
 
 class MoviesListViewModel(
+    private val category: MoviesListCategory,
     private val repository: Repository
 ) : ViewModel() {
 
@@ -27,7 +29,7 @@ class MoviesListViewModel(
 
     fun loadMovies() {
         viewModelScope.launch(exceptionHandler) {
-            _mutableMoviesList.value = repository.getPopularMovies()
+            _mutableMoviesList.value = repository.getMovies(category)
         }
     }
 }

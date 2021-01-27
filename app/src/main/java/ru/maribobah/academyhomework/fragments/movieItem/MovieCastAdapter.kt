@@ -1,10 +1,11 @@
-package ru.maribobah.academyhomework
+package ru.maribobah.academyhomework.fragments.movieItem
 
 import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ru.maribobah.academyhomework.R
 import ru.maribobah.academyhomework.data.models.Actor
 
 class MovieCastAdapter :
