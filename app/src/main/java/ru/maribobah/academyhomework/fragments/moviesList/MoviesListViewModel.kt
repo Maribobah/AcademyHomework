@@ -8,28 +8,37 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.maribobah.academyhomework.data.Repository
-import ru.maribobah.academyhomework.data.models.Movie
-import ru.maribobah.academyhomework.fragments.categories.MoviesListCategory
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
+import ru.maribobah.academyhomework.data.models.MoviesListCategory
 
 class MoviesListViewModel(
     private val category: MoviesListCategory,
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _mutableMoviesList = MutableLiveData<List<Movie>>(emptyList())
-    val moviesList: LiveData<List<Movie>> get() = _mutableMoviesList
+    private val _mutableMoviesList = MutableLiveData<List<MovieEntity>>(emptyList())
+    val moviesList: LiveData<List<MovieEntity>> get() = _mutableMoviesList
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+    private val loadExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e("MoviesListViewModel", "Failed load movies.", throwable)
     }
 
     init {
-        loadMovies()
+        fetchMoviesFromDB()
+        updateMoviesFromNetwork()
     }
 
-    fun loadMovies() {
-        viewModelScope.launch(exceptionHandler) {
-            _mutableMoviesList.value = repository.getMovies(category)
+    private fun fetchMoviesFromDB() {
+        viewModelScope.launch(loadExceptionHandler) {
+            _mutableMoviesList.value = repository.getMovies(category, Repository.Type.DB)
+        }
+    }
+
+    private fun updateMoviesFromNetwork() {
+        viewModelScope.launch(loadExceptionHandler) {
+            val movies = repository.getMovies(category, Repository.Type.NETWORK)
+            _mutableMoviesList.value = movies
+            repository.saveMovies(movies, category)
         }
     }
 }

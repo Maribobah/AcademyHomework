@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.R
-import ru.maribobah.academyhomework.data.models.Actor
+import ru.maribobah.academyhomework.data.localdb.entity.ActorEntity
 
 class MovieCastAdapter :
     RecyclerView.Adapter<MovieCastViewHolder>() {
 
-    private var actors: List<Actor> = emptyList()
+    private var actors: List<ActorEntity> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieCastViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,9 +25,9 @@ class MovieCastAdapter :
 
     override fun getItemCount(): Int = actors.size
 
-    override fun getItemId(position: Int): Long = actors[position].id.toLong()
+    override fun getItemId(position: Int): Long = actors[position].id
 
-    fun setData(actors: List<Actor>) {
+    fun setData(actors: List<ActorEntity>) {
         this.actors = actors
         notifyDataSetChanged()
     }

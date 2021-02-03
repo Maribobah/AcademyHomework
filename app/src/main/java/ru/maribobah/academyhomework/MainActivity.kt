@@ -2,7 +2,7 @@ package ru.maribobah.academyhomework
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
 import ru.maribobah.academyhomework.fragments.categories.CategoriesFragment
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
 import ru.maribobah.academyhomework.fragments.movieItem.MovieItemFragment
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
         }
     }
 
-    override fun onClickMovieCard(movie: Movie) {
+    override fun onClickMovieCard(movie: MovieEntity) {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
             .replace(R.id.container_main, MovieItemFragment.newInstance(movie.id))

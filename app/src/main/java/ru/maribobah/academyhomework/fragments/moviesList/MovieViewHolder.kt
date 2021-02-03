@@ -10,8 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import ru.maribobah.academyhomework.R
 import ru.maribobah.academyhomework.RatingBarSvg
-import ru.maribobah.academyhomework.data.models.Movie
-import ru.maribobah.academyhomework.data.tmdb.MovieConverter
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -24,9 +23,9 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val duration: TextView = itemView.findViewById(R.id.tv_duration)
     private val rating: RatingBarSvg = itemView.findViewById(R.id.rb_rating)
 
-    fun bindMovie(movie: Movie) {
+    fun bindMovie(movie: MovieEntity) {
         rate.text = movie.rate
-        genre.text = movie.genresPresentation
+        genre.text = movie.genres
         title.text = movie.name
         review.text = movie.reviews
         rating.rating = movie.stars
@@ -52,7 +51,13 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .transform(GranularRoundedCorners(radiusCorners, radiusCorners, 0f, 0f))
             .placeholder(circularProgressDrawable)
             .into(poster)
-        MovieConverter.setTintColor(like, movie.like)
+        setTintColor(like, movie.like)
     }
 
+    private fun setTintColor(imageView: ImageView, value: Boolean) {
+        if (value)
+            imageView.setColorFilter(imageView.resources.getColor(R.color.activity_color))
+        else
+            imageView.clearColorFilter()
+    }
 }

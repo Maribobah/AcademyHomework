@@ -13,16 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.maribobah.academyhomework.*
-import ru.maribobah.academyhomework.data.models.Actor
-import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.data.localdb.entity.ActorEntity
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
 
 class MovieItemFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
-    private val viewModel: MovieItemViewModel by viewModels { ViewModelFactory() }
+    private val viewModel: MovieItemViewModel by viewModels { ViewModelFactory(requireContext()) }
     private lateinit var adapter: MovieCastAdapter
-    private var idMovie: Int = -1
+    private var idMovie: Long = -1
 
     private var recycler: RecyclerView? = null
     private lateinit var tvRate: TextView
@@ -36,7 +36,7 @@ class MovieItemFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        idMovie = arguments?.getInt(ID_FIELD)
+        idMovie = arguments?.getLong(ID_FIELD)
             ?: throw IllegalArgumentException("Can't find \"$ID_FIELD\" argument")
     }
 
@@ -105,10 +105,10 @@ class MovieItemFragment : Fragment() {
         tvHeadCast = view.findViewById(R.id.tv_head_cast)
     }
 
-    private fun updateMovie(movie: Movie) {
+    private fun updateMovie(movie: MovieEntity) {
         tvRate.text = movie.rate
         tvTitle.text = movie.name
-        tvGenre.text = movie.genresPresentation
+        tvGenre.text = movie.genres
         tvReviews.text = movie.reviews
         tvStoryline.text = movie.storyline
         rbRating.rating = movie.stars
@@ -116,21 +116,23 @@ class MovieItemFragment : Fragment() {
         Glide.with(this).load(movie.backdrop).into(ivPoster)
     }
 
-    private fun updateActors(actors: List<Actor>) {
+    private fun updateActors(actors: List<ActorEntity>) {
         if (actors.isEmpty()) {
             tvHeadCast.visibility = View.GONE
             recycler?.visibility = View.GONE
         } else {
+            tvHeadCast.visibility = View.VISIBLE
+            recycler?.visibility = View.VISIBLE
             adapter.setData(actors)
         }
     }
 
     companion object {
         private const val ID_FIELD = "id"
-        fun newInstance(id: Int): MovieItemFragment {
+        fun newInstance(id: Long): MovieItemFragment {
             val args = Bundle()
-            args.putInt(ID_FIELD, id)
             val fragment = MovieItemFragment()
+            args.putLong(ID_FIELD, id)
             fragment.arguments = args
             return fragment
         }

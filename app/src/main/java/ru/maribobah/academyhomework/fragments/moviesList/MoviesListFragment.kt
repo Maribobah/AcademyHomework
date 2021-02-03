@@ -10,16 +10,21 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.R
-import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
-import ru.maribobah.academyhomework.fragments.categories.MoviesListCategory
+import ru.maribobah.academyhomework.data.models.MoviesListCategory
 
 class MovieListFragment : Fragment() {
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
     private lateinit var category: MoviesListCategory
 
-    private val viewModel: MoviesListViewModel by viewModels { MoviesListViewModelFactory(category) }
+    private val viewModel: MoviesListViewModel by viewModels {
+        MoviesListViewModelFactory(
+            requireContext(),
+            category
+        )
+    }
     private lateinit var adapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +75,7 @@ class MovieListFragment : Fragment() {
         )
     }
 
-    private fun updateMovieAdapter(movies: List<Movie>) {
+    private fun updateMovieAdapter(movies: List<MovieEntity>) {
         adapter.setData(movies)
     }
 

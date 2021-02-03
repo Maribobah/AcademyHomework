@@ -51,7 +51,7 @@ class TmdbApi {
         suspend fun movieDetails(@Path("movie_id") movieId: Int): Movie
 
         @GET("movie/{movie_id}/credits")
-        suspend fun movieCredits(@Path("movie_id") movieId: Int): MovieCreditsResponse
+        suspend fun movieCredits(@Path("movie_id") movieId: Long): MovieCreditsResponse
 
         @GET("movie/{person_id}")
         suspend fun personDetails(@Path("person_id") personId: Int): Actor
