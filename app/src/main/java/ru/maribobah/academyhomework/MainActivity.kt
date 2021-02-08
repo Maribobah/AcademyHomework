@@ -2,10 +2,13 @@ package ru.maribobah.academyhomework
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.WorkManager
 import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
 import ru.maribobah.academyhomework.fragments.categories.CategoriesFragment
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
 import ru.maribobah.academyhomework.fragments.movieItem.MovieItemFragment
+import ru.maribobah.academyhomework.workers.WorkRepository
 
 class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
 
@@ -17,6 +20,11 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container_main, CategoriesFragment())
                 .commit()
+            WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+                WorkRepository.UPLOAD_DATA_TAG,
+                ExistingPeriodicWorkPolicy.KEEP,
+                WorkRepository.uploadData()
+            )
         }
     }
 
