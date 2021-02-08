@@ -10,8 +10,8 @@ class WorkRepository {
 
     companion object {
 
-        private val UPLOAD_DATA_DURATION: Long = 8
-        val UPLOAD_DATA_TAG: String = "Upload Data"
+        private const val UPLOAD_DATA_DURATION: Long = 8
+        const val UPLOAD_DATA_TAG: String = "Upload Data"
 
         fun uploadData(): PeriodicWorkRequest =
             PeriodicWorkRequestBuilder<UpdateDataWorker>(
