@@ -2,60 +2,96 @@ package ru.maribobah.academyhomework.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.maribobah.academyhomework.data.models.Actor
-import ru.maribobah.academyhomework.data.models.Movie
-import ru.maribobah.academyhomework.data.tmdb.ImagesConverter
-import ru.maribobah.academyhomework.data.tmdb.MovieConverter
+import ru.maribobah.academyhomework.data.localdb.Dao
+import ru.maribobah.academyhomework.data.localdb.DataMapper
+import ru.maribobah.academyhomework.data.localdb.entity.ActorEntity
+import ru.maribobah.academyhomework.data.localdb.entity.ActorsByMovieEntity
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
+import ru.maribobah.academyhomework.data.localdb.entity.MoviesByCategoryEntity
 import ru.maribobah.academyhomework.data.tmdb.TmdbApi
-import ru.maribobah.academyhomework.fragments.categories.MoviesListCategory
+import ru.maribobah.academyhomework.data.models.MoviesListCategory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Repository {
+@Singleton
+class Repository @Inject constructor(
+    private val dao: Dao,
+    private val tmdbServices: TmdbApi.ServicesApi,
+    private val dataMapper: DataMapper
+) {
 
-    private val tmdbApi = TmdbApi.getInstance()
-    private val imagesConverter = ImagesConverter()
-
-    suspend fun getMovies(category: MoviesListCategory) : List<Movie>{
-        val service = when(category) {
-            MoviesListCategory.NOW_PLAYING -> tmdbApi.services::popularMovies
-            MoviesListCategory.UPCOMING -> tmdbApi.services::upcomingMovies
-            MoviesListCategory.POPULAR -> tmdbApi.services::popularMovies
-            MoviesListCategory.TOP_RATED -> tmdbApi.services::topRatedMovies
-        }
-        val res = service.invoke()
-        return convertMovies(res.movies)
+    enum class Type {
+        DB,
+        NETWORK
     }
 
-    suspend fun getMovieDetails(id: Int) : Movie = withContext(Dispatchers.IO) {
-        val movieDetails = tmdbApi.services.movieDetails(id)
-        convertMovieDetails(movieDetails)
-        movieDetails
-    }
-
-    suspend fun getMovieActors(id: Int) : List<Actor> = withContext(Dispatchers.IO) {
-        val credits = tmdbApi.services.movieCredits(id)
-        return@withContext credits.actors.map { actor ->
-            if (actor.avatar != null) {
-                actor.avatar = imagesConverter.getFullProfilePath(actor.avatar)
+    suspend fun getMovies(category: MoviesListCategory, type: Type): List<MovieEntity> =
+        withContext(Dispatchers.IO) {
+            when (type) {
+                Type.DB -> {
+                    dao.getMovies(category.name).flatMap { it.movies }
+                }
+                Type.NETWORK -> {
+                    val service = when (category) {
+                        MoviesListCategory.NOW_PLAYING -> tmdbServices::popularMovies
+                        MoviesListCategory.UPCOMING -> tmdbServices::upcomingMovies
+                        MoviesListCategory.POPULAR -> tmdbServices::popularMovies
+                        MoviesListCategory.TOP_RATED -> tmdbServices::topRatedMovies
+                    }
+                    val res = service.invoke()
+                    dataMapper.toMovieEntityList(res.movies)
+                }
             }
-            actor
         }
+
+    suspend fun getMovieDetails(id: Long): MovieEntity? = withContext(Dispatchers.IO) {
+        dao.getMovieById(id)
     }
 
-    private suspend fun convertMovies(movies: List<Movie>) : List<Movie> {
-        return movies.map { movie ->
-            convertMovieDetails(movie)
-            movie
+    suspend fun getMovieActors(id: Long, type: Type): List<ActorEntity> =
+        withContext(Dispatchers.IO) {
+            when (type) {
+                Type.DB -> {
+                    dao.getMovieActors(id).flatMap { it.actors }
+                }
+                Type.NETWORK -> {
+                    val credits = tmdbServices.movieCredits(id)
+                    dataMapper.toActorEntityList(credits.actors)
+                }
+            }
         }
-    }
 
-    private suspend fun convertMovieDetails(movie: Movie) {
-        movie.backdrop = imagesConverter.getFullBackdropPath(movie.backdrop)
-        movie.poster = imagesConverter.getFullPosterPath(movie.poster)
-        movie.reviews = MovieConverter.fromVoteCountToReviews(movie.votesCount)
-        movie.duration = MovieConverter.fromRuntimeToDuration(movie.runtime)
-        movie.genresPresentation = MovieConverter.genresPresentation(movie.genres)
-        movie.stars = MovieConverter.starsFormat(movie.stars)
-        movie.rate = MovieConverter.fromAdultToRate(movie.adult)
-    }
+    suspend fun saveMovies(movies: List<MovieEntity>, category: MoviesListCategory) =
+        withContext(Dispatchers.IO) {
+            dao.deleteMoviesByCategory(category.name)
+            movies.forEach { movie ->
+                val id = dao.createMovieIfNotExist(movie)
+                if (id == (-1).toLong()) {
+                    dao.updateMovie(movie)
+                }
+                dao.addMovieToCategory(
+                    MoviesByCategoryEntity(
+                        category = category.name,
+                        movie = movie.id
+                    )
+                )
+            }
+        }
 
+    suspend fun saveActors(actors: List<ActorEntity>, movieId: Long) =
+        withContext(Dispatchers.IO) {
+            dao.deleteActorsByMovie(movieId)
+            actors.forEach { actor ->
+                val id = dao.createActorIfNotExist(actor)
+                if (id == (-1).toLong()) {
+                    dao.updateActor(actor)
+                }
+                dao.addActorToMovie(
+                    ActorsByMovieEntity(
+                        movie = movieId,
+                        actor = actor.id
+                    )
+                )
+            }
+        }
 }

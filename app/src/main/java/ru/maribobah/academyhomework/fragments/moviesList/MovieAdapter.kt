@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.R
-import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
 
 class MovieAdapter(
     val clickListener: FragmentMoviesListClickListener?
 ) : RecyclerView.Adapter<MovieViewHolder>() {
 
-    private var movies: List<Movie> = emptyList()
+    private var movies: List<MovieEntity> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,15 +25,15 @@ class MovieAdapter(
         val movie = movies[position]
         holder.bindMovie(movie)
         holder.itemView.setOnClickListener {
-            clickListener?.onClickMovieCard(movie)
+            clickListener?.onClickMovieCard(movie.id)
         }
     }
 
     override fun getItemCount(): Int = movies.size
 
-    override fun getItemId(position: Int): Long = movies[position].id.toLong()
+    override fun getItemId(position: Int): Long = movies[position].id
 
-    fun setData(movies: List<Movie>) {
+    fun setData(movies: List<MovieEntity>) {
         this.movies = movies
         notifyDataSetChanged()
     }

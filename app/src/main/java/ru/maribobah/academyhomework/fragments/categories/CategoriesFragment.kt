@@ -9,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.maribobah.academyhomework.R
-import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.data.models.MoviesListCategory
 
 class CategoriesFragment : Fragment() {
 
@@ -38,6 +38,6 @@ class CategoriesFragment : Fragment() {
 }
 
 interface FragmentMoviesListClickListener {
-    fun onClickMovieCard(movie: Movie)
+    fun onClickMovieCard(movieId: Long)
     fun onClickBack()
 }

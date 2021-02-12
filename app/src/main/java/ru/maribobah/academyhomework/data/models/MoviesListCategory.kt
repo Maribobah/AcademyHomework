@@ -1,4 +1,4 @@
-package ru.maribobah.academyhomework.fragments.categories
+package ru.maribobah.academyhomework.data.models
 
 enum class MoviesListCategory(val text: String) {
     NOW_PLAYING("Now Playing"),

@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.maribobah.academyhomework.R
-import ru.maribobah.academyhomework.data.models.Actor
+import ru.maribobah.academyhomework.data.localdb.entity.ActorEntity
 
 class MovieCastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -20,8 +20,8 @@ class MovieCastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.resources.getInteger(R.integer.corners_radius_actor_avatar)
     )
 
-    fun bindActor(actor: Actor) {
-        if (actor.avatar != null) {
+    fun bindActor(actor: ActorEntity) {
+        if (actor.avatar.isNotEmpty()) {
             Glide.with(itemView).load(actor.avatar)
                 .transform(scaleTransformation, roundedCorners)
                 .into(avatar)

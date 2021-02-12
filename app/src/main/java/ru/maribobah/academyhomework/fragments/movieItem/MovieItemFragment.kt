@@ -8,23 +8,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import ru.maribobah.academyhomework.*
-import ru.maribobah.academyhomework.data.models.Actor
-import ru.maribobah.academyhomework.data.models.Movie
+import ru.maribobah.academyhomework.data.localdb.entity.ActorEntity
+import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
+import ru.maribobah.academyhomework.di.Injectable
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
+import javax.inject.Inject
 
-class MovieItemFragment : Fragment() {
+class MovieItemFragment : Fragment(), Injectable {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
-    private val viewModel: MovieItemViewModel by viewModels { ViewModelFactory() }
+    private val viewModel: MovieItemViewModel by viewModels { viewModelFactory }
     private lateinit var adapter: MovieCastAdapter
-    private var idMovie: Int = -1
+    private var idMovie: Long = -1
 
     private var recycler: RecyclerView? = null
+    private lateinit var layout: ConstraintLayout
     private lateinit var tvRate: TextView
     private lateinit var tvTitle: TextView
     private lateinit var tvGenre: TextView
@@ -36,7 +45,7 @@ class MovieItemFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        idMovie = arguments?.getInt(ID_FIELD)
+        idMovie = arguments?.getLong(ID_FIELD)
             ?: throw IllegalArgumentException("Can't find \"$ID_FIELD\" argument")
     }
 
@@ -95,6 +104,7 @@ class MovieItemFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
+        layout = view.findViewById(R.id.cl_movie_details)
         tvRate = view.findViewById(R.id.tv_rate_details)
         tvTitle = view.findViewById(R.id.tv_title_details)
         tvGenre = view.findViewById(R.id.tv_genre_details)
@@ -105,32 +115,39 @@ class MovieItemFragment : Fragment() {
         tvHeadCast = view.findViewById(R.id.tv_head_cast)
     }
 
-    private fun updateMovie(movie: Movie) {
-        tvRate.text = movie.rate
-        tvTitle.text = movie.name
-        tvGenre.text = movie.genresPresentation
-        tvReviews.text = movie.reviews
-        tvStoryline.text = movie.storyline
-        rbRating.rating = movie.stars
+    private fun updateMovie(movieEntity: MovieEntity?) {
+        movieEntity?.let { movie ->
+            tvRate.text = movie.rate
+            tvTitle.text = movie.name
+            tvGenre.text = movie.genres
+            tvReviews.text = movie.reviews
+            tvStoryline.text = movie.storyline
+            rbRating.rating = movie.stars
 
-        Glide.with(this).load(movie.backdrop).into(ivPoster)
+            Glide.with(this).load(movie.backdrop).into(ivPoster)
+        } ?: run {
+            Snackbar.make(layout, "Can't find the movie", Snackbar.LENGTH_SHORT).show()
+            activity?.supportFragmentManager?.popBackStack()
+        }
     }
 
-    private fun updateActors(actors: List<Actor>) {
+    private fun updateActors(actors: List<ActorEntity>) {
         if (actors.isEmpty()) {
             tvHeadCast.visibility = View.GONE
             recycler?.visibility = View.GONE
         } else {
+            tvHeadCast.visibility = View.VISIBLE
+            recycler?.visibility = View.VISIBLE
             adapter.setData(actors)
         }
     }
 
     companion object {
         private const val ID_FIELD = "id"
-        fun newInstance(id: Int): MovieItemFragment {
+        fun newInstance(id: Long): MovieItemFragment {
             val args = Bundle()
-            args.putInt(ID_FIELD, id)
             val fragment = MovieItemFragment()
+            args.putLong(ID_FIELD, id)
             fragment.arguments = args
             return fragment
         }
