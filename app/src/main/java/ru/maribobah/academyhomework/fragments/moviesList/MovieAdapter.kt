@@ -25,7 +25,7 @@ class MovieAdapter(
         val movie = movies[position]
         holder.bindMovie(movie)
         holder.itemView.setOnClickListener {
-            clickListener?.onClickMovieCard(movie)
+            clickListener?.onClickMovieCard(movie.id)
         }
     }
 

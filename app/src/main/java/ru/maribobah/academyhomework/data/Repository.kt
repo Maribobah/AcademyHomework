@@ -1,24 +1,24 @@
 package ru.maribobah.academyhomework.data
 
-import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.maribobah.academyhomework.data.localdb.AppDatabase
+import ru.maribobah.academyhomework.data.localdb.Dao
+import ru.maribobah.academyhomework.data.localdb.DataMapper
 import ru.maribobah.academyhomework.data.localdb.entity.ActorEntity
-import ru.maribobah.academyhomework.data.localdb.entity.ActorsByMovie
+import ru.maribobah.academyhomework.data.localdb.entity.ActorsByMovieEntity
 import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
-import ru.maribobah.academyhomework.data.localdb.entity.MoviesByCategory
-import ru.maribobah.academyhomework.data.localdb.toActorEntityList
-import ru.maribobah.academyhomework.data.localdb.toMovieEntityList
-import ru.maribobah.academyhomework.data.tmdb.ImagesConverter
+import ru.maribobah.academyhomework.data.localdb.entity.MoviesByCategoryEntity
 import ru.maribobah.academyhomework.data.tmdb.TmdbApi
 import ru.maribobah.academyhomework.data.models.MoviesListCategory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Repository(context: Context) {
-
-    private val tmdbApi = TmdbApi.getInstance()
-    private val localDb = AppDatabase.getInstance(context)
-    private val imagesConverter = ImagesConverter()
+@Singleton
+class Repository @Inject constructor(
+    private val dao: Dao,
+    private val tmdbServices: TmdbApi.ServicesApi,
+    private val dataMapper: DataMapper
+) {
 
     enum class Type {
         DB,
@@ -29,48 +29,48 @@ class Repository(context: Context) {
         withContext(Dispatchers.IO) {
             when (type) {
                 Type.DB -> {
-                    localDb.dao.getMovies(category.name).flatMap { it.movies }
+                    dao.getMovies(category.name).flatMap { it.movies }
                 }
                 Type.NETWORK -> {
                     val service = when (category) {
-                        MoviesListCategory.NOW_PLAYING -> tmdbApi.services::popularMovies
-                        MoviesListCategory.UPCOMING -> tmdbApi.services::upcomingMovies
-                        MoviesListCategory.POPULAR -> tmdbApi.services::popularMovies
-                        MoviesListCategory.TOP_RATED -> tmdbApi.services::topRatedMovies
+                        MoviesListCategory.NOW_PLAYING -> tmdbServices::popularMovies
+                        MoviesListCategory.UPCOMING -> tmdbServices::upcomingMovies
+                        MoviesListCategory.POPULAR -> tmdbServices::popularMovies
+                        MoviesListCategory.TOP_RATED -> tmdbServices::topRatedMovies
                     }
                     val res = service.invoke()
-                    res.movies.toMovieEntityList(imagesConverter)
+                    dataMapper.toMovieEntityList(res.movies)
                 }
             }
         }
 
-    suspend fun getMovieDetails(id: Long): MovieEntity = withContext(Dispatchers.IO) {
-        localDb.dao.getMovieById(id)
+    suspend fun getMovieDetails(id: Long): MovieEntity? = withContext(Dispatchers.IO) {
+        dao.getMovieById(id)
     }
 
     suspend fun getMovieActors(id: Long, type: Type): List<ActorEntity> =
         withContext(Dispatchers.IO) {
             when (type) {
                 Type.DB -> {
-                    localDb.dao.getMovieActors(id).flatMap { it.actors }
+                    dao.getMovieActors(id).flatMap { it.actors }
                 }
                 Type.NETWORK -> {
-                    val credits = tmdbApi.services.movieCredits(id)
-                    credits.actors.toActorEntityList(imagesConverter)
+                    val credits = tmdbServices.movieCredits(id)
+                    dataMapper.toActorEntityList(credits.actors)
                 }
             }
         }
 
     suspend fun saveMovies(movies: List<MovieEntity>, category: MoviesListCategory) =
         withContext(Dispatchers.IO) {
-            localDb.dao.deleteMoviesByCategory(category.name)
+            dao.deleteMoviesByCategory(category.name)
             movies.forEach { movie ->
-                val id = localDb.dao.createMovieIfNotExist(movie)
+                val id = dao.createMovieIfNotExist(movie)
                 if (id == (-1).toLong()) {
-                    localDb.dao.updateMovie(movie)
+                    dao.updateMovie(movie)
                 }
-                localDb.dao.addMovieToCategory(
-                    MoviesByCategory(
+                dao.addMovieToCategory(
+                    MoviesByCategoryEntity(
                         category = category.name,
                         movie = movie.id
                     )
@@ -80,14 +80,14 @@ class Repository(context: Context) {
 
     suspend fun saveActors(actors: List<ActorEntity>, movieId: Long) =
         withContext(Dispatchers.IO) {
-            localDb.dao.deleteActorsByMovie(movieId)
+            dao.deleteActorsByMovie(movieId)
             actors.forEach { actor ->
-                val id = localDb.dao.createActorIfNotExist(actor)
+                val id = dao.createActorIfNotExist(actor)
                 if (id == (-1).toLong()) {
-                    localDb.dao.updateActor(actor)
+                    dao.updateActor(actor)
                 }
-                localDb.dao.addActorToMovie(
-                    ActorsByMovie(
+                dao.addActorToMovie(
+                    ActorsByMovieEntity(
                         movie = movieId,
                         actor = actor.id
                     )

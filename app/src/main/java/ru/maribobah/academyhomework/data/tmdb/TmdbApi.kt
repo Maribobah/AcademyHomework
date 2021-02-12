@@ -57,25 +57,9 @@ class TmdbApi {
         suspend fun personDetails(@Path("person_id") personId: Int): Actor
     }
 
-    val services: ServicesApi = retrofit.create(ServicesApi::class.java)
+    fun services() : ServicesApi = retrofit.create(ServicesApi::class.java)
 
     companion object {
-
         private const val BASE_URL = "https://api.themoviedb.org/3/"
-
-        @Volatile
-        private var INSTANCE: TmdbApi? = null
-
-        fun getInstance(): TmdbApi {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
-                val instance = TmdbApi()
-                INSTANCE = instance
-                return instance
-            }
-        }
     }
 }

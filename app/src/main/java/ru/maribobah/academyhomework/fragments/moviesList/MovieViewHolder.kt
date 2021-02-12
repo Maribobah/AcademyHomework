@@ -54,8 +54,8 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         setTintColor(like, movie.like)
     }
 
-    private fun setTintColor(imageView: ImageView, value: Boolean) {
-        if (value)
+    private fun setTintColor(imageView: ImageView, enable: Boolean) {
+        if (enable)
             imageView.setColorFilter(imageView.resources.getColor(R.color.activity_color))
         else
             imageView.clearColorFilter()
