@@ -57,6 +57,7 @@ dependencies {
     implementation deps.room.ktx
     implementation deps.swiperefreshlayout
     implementation deps.viewpager
+    implementation deps.workmanager
 
     implementation deps.kotlin.stdlib
     implementation deps.kotlin.json
