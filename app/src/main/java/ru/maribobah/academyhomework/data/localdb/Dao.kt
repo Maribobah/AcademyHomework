@@ -7,22 +7,24 @@ import ru.maribobah.academyhomework.data.localdb.entity.*
 @Dao
 interface Dao {
 
+    @Transaction
     @Query("""
-            SELECT * FROM ${DbContract.MoviesByCategory.TABLE_NAME} 
-            WHERE ${DbContract.MoviesByCategory.COLUMN_NAME_CATEGORY} = :category
-            ORDER BY ${DbContract.MoviesByCategory.COLUMN_NAME_ID} ASC""")
-    suspend fun getMovies(category: String) : List<CategoryWithMovies>
+            SELECT * FROM movies_by_category 
+            WHERE category = :category
+            ORDER BY _id ASC""")
+    suspend fun getMovies(category: String) : List<CategoryWithMoviesEntity>
 
     @Query("""
-        SELECT * FROM ${DbContract.Movies.TABLE_NAME} 
-        WHERE ${DbContract.Movies.COLUMN_NAME_ID} = :id """)
-    suspend fun getMovieById(id: Long) : MovieEntity
+        SELECT * FROM movies 
+        WHERE _id = :id """)
+    suspend fun getMovieById(id: Long) : MovieEntity?
 
+    @Transaction
     @Query("""
-        SELECT * FROM ${DbContract.ActorsByMovie.TABLE_NAME}
-        WHERE ${DbContract.ActorsByMovie.COLUMN_NAME_MOVIE} = :movie
-        ORDER BY ${DbContract.ActorsByMovie.COLUMN_NAME_ID} ASC""")
-    suspend fun getMovieActors(movie: Long) : List<MovieWithActors>
+        SELECT * FROM actors_by_movie
+        WHERE movie = :movie
+        ORDER BY _id ASC""")
+    suspend fun getMovieActors(movie: Long) : List<MovieWithActorsEntity>
     
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun createMovieIfNotExist(movie: MovieEntity) : Long
@@ -31,11 +33,11 @@ interface Dao {
     suspend fun updateMovie(movie: MovieEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addMovieToCategory(record: MoviesByCategory)
+    suspend fun addMovieToCategory(record: MoviesByCategoryEntity)
 
     @Query("""
-        DELETE FROM ${DbContract.MoviesByCategory.TABLE_NAME}
-        WHERE ${DbContract.MoviesByCategory.COLUMN_NAME_CATEGORY} = :category
+        DELETE FROM movies_by_category
+        WHERE category = :category
     """)
     suspend fun deleteMoviesByCategory(category: String)
 
@@ -46,11 +48,11 @@ interface Dao {
     suspend fun updateActor(actor: ActorEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addActorToMovie(record: ActorsByMovie)
+    suspend fun addActorToMovie(record: ActorsByMovieEntity)
 
     @Query("""
-        DELETE FROM ${DbContract.ActorsByMovie.TABLE_NAME}
-        WHERE ${DbContract.ActorsByMovie.COLUMN_NAME_MOVIE} = :movie
+        DELETE FROM actors_by_movie
+        WHERE movie = :movie
     """)
     suspend fun deleteActorsByMovie(movie: Long)
 

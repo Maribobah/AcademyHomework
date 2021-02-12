@@ -7,24 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.maribobah.academyhomework.R
 import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
 import ru.maribobah.academyhomework.data.models.MoviesListCategory
+import ru.maribobah.academyhomework.di.Injectable
+import javax.inject.Inject
 
-class MovieListFragment : Fragment() {
+class MovieListFragment : Fragment(), Injectable {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var fragmentMoviesClickListener: FragmentMoviesListClickListener? = null
     private lateinit var category: MoviesListCategory
-
-    private val viewModel: MoviesListViewModel by viewModels {
-        MoviesListViewModelFactory(
-            requireContext(),
-            category
-        )
-    }
+    private val viewModel: MoviesListViewModel by viewModels { viewModelFactory }
     private lateinit var adapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +46,7 @@ class MovieListFragment : Fragment() {
         adapter = MovieAdapter(clickListener = fragmentMoviesClickListener)
         initRecycler(view)
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateMovieAdapter)
+        viewModel.loadMovies(category)
     }
 
     override fun onAttach(context: Context) {

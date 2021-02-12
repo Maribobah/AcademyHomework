@@ -10,15 +10,15 @@ import kotlinx.coroutines.launch
 import ru.maribobah.academyhomework.data.Repository
 import ru.maribobah.academyhomework.data.localdb.entity.ActorEntity
 import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
+import javax.inject.Inject
 
-class MovieItemViewModel(
-    private val repository: Repository
-) : ViewModel() {
+class MovieItemViewModel
+    @Inject constructor(private val repository: Repository) : ViewModel() {
 
     private val _mutableMovie = MutableLiveData<MovieEntity>()
-    val movie: LiveData<MovieEntity> get() = _mutableMovie
+    val movie: LiveData<MovieEntity> = _mutableMovie
     private val _mutableActors = MutableLiveData<List<ActorEntity>>()
-    val actors: LiveData<List<ActorEntity>> get() = _mutableActors
+    val actors: LiveData<List<ActorEntity>> = _mutableActors
 
     private var movieId: Long = -1
 
@@ -50,7 +50,6 @@ class MovieItemViewModel(
     }
 
     private fun updateActorsFromNetwork() {
-
         viewModelScope.launch(loadActorsExceptionHandler) {
             val actorsNetwork = repository.getMovieActors(movieId, Repository.Type.NETWORK)
             _mutableActors.value = actorsNetwork

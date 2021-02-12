@@ -1,8 +1,11 @@
 package ru.maribobah.academyhomework.data.tmdb
 
 import ru.maribobah.academyhomework.data.models.ConfigurationImage
+import javax.inject.Inject
 
-class ImagesConverter {
+class ImagesConverter @Inject constructor(
+    private val tmdbServices: TmdbApi.ServicesApi
+) {
 
     private var imagesInfo: ConfigurationImage? = null
 
@@ -29,8 +32,7 @@ class ImagesConverter {
         if (tempImagesInfo != null) {
             return tempImagesInfo
         }
-        val tmdbApi = TmdbApi.getInstance()
-        return tmdbApi.services.configuration().images
+        return tmdbServices.configuration().images
     }
 
     private fun getAppropriateSizeFromList(list: List<String>, size: Int): String? {

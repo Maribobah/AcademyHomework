@@ -2,17 +2,21 @@ package ru.maribobah.academyhomework
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ru.maribobah.academyhomework.data.localdb.entity.MovieEntity
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import ru.maribobah.academyhomework.fragments.categories.CategoriesFragment
 import ru.maribobah.academyhomework.fragments.categories.FragmentMoviesListClickListener
 import ru.maribobah.academyhomework.fragments.movieItem.MovieItemFragment
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
+class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentMoviesListClickListener {
+    @Inject
+    lateinit var androidInjector : DispatchingAndroidInjector<Any>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container_main, CategoriesFragment())
@@ -20,10 +24,10 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
         }
     }
 
-    override fun onClickMovieCard(movie: MovieEntity) {
+    override fun onClickMovieCard(movieId: Long) {
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.container_main, MovieItemFragment.newInstance(movie.id))
+            .replace(R.id.container_main, MovieItemFragment.newInstance(movieId))
             .commit()
     }
 
@@ -31,5 +35,6 @@ class MainActivity : AppCompatActivity(), FragmentMoviesListClickListener {
         supportFragmentManager.popBackStack()
     }
 
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 }
 
