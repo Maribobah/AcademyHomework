@@ -2,13 +2,17 @@ package ru.maribobah.academyhomework.di
 
 import android.app.Application
 import androidx.room.Room
+import androidx.work.WorkerFactory
+import androidx.work.WorkerParameters
 import dagger.Module
 import dagger.Provides
+import ru.maribobah.academyhomework.data.Repository
 import ru.maribobah.academyhomework.data.localdb.AppDatabase
 import ru.maribobah.academyhomework.data.localdb.Dao
 import ru.maribobah.academyhomework.data.localdb.DataMapper
 import ru.maribobah.academyhomework.data.tmdb.ImagesConverter
 import ru.maribobah.academyhomework.data.tmdb.TmdbApi
+import ru.maribobah.academyhomework.workers.UpdateDataWorkerFactory
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])
@@ -44,5 +48,11 @@ class AppModule {
     @Provides
     fun provideImagesConverter(tmdbService : TmdbApi.ServicesApi) : ImagesConverter {
         return ImagesConverter(tmdbService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUpdateDataWorkerFactory(repository: Repository) : UpdateDataWorkerFactory {
+        return UpdateDataWorkerFactory(repository)
     }
 }

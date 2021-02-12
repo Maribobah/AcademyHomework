@@ -6,12 +6,15 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ru.maribobah.academyhomework.data.Repository
 import ru.maribobah.academyhomework.data.models.MoviesListCategory
+import javax.inject.Singleton
 
+@Singleton
 class UpdateDataWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
+
+    lateinit var repository: Repository
+
     override suspend fun doWork(): Result {
-        val appContext = applicationContext
         return try {
-            val repository = Repository(appContext)
             enumValues<MoviesListCategory>().forEach { category ->
                 val movies = repository.getMovies(category, Repository.Type.NETWORK)
                 repository.saveMovies(movies, category)
